@@ -1,54 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NotOurStackOverflow;
 using NotOurStackOverflow.Controllers;
+using NotOurStackOverflow.Models;
 
 namespace NotOurStackOverflow.Tests.Controllers
 {
     [TestClass]
-    public class HomeControllerTest
+    public class NonQueryTests
     {
-        [TestMethod]
-        public void Index()
+        [TestInitialize]
+        public void Setup()
         {
-            // Arrange
-            HomeController controller = new HomeController();
+            var mockUserSet = new Mock<DbSet<ApplicationUser>>();
+            var mockQuestionSet = new Mock<DbSet<Question>>();
+            var mockCommentSet = new Mock<DbSet<Comment>>();
+            var mockAnswerSet = new Mock<DbSet<Answer>>();
+            var mockTagSet = new Mock<DbSet<Tag>>();
+            var mockVoteSet = new Mock<DbSet<Vote>>();
 
-            // Act
-            ViewResult result = controller.Index() as ViewResult;
+            var mockContext = new Mock<DbContext>();
 
-            // Assert
-            Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        public void About()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.About() as ViewResult;
-
-            // Assert
-            Assert.AreEqual("Your application description page.", result.ViewBag.Message);
-        }
-
-        [TestMethod]
-        public void Contact()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.Contact() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
+            // new setup will need to be added here depending on what we're looking to have returned
         }
     }
 }
