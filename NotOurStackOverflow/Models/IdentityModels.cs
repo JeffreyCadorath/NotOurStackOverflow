@@ -90,5 +90,7 @@ namespace NotOurStackOverflow.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<NotOurStackOverflow.Models.Post> Posts { get; set; }
     }
 }
