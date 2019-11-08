@@ -1,0 +1,24 @@
+﻿@model NotOurStackOverflow.Models.ViewModels.LandingPageViewModel
+
+@{
+    ViewBag.Title = "LandingPage";
+}
+
+<h2>Welcome Home, @Model.CurrentUser.UserName. We've missed you.</h2>
+
+@if (Model.CurrentUserQuestions.Any())
+{
+    <div class="card-box">
+        @foreach(var q in Model.CurrentUserQuestions)
+        {
+            <div class="question-card">
+                <h3>
+                    @q.Title
+                    @* link to current question page *@
+                </h3>
+
+            </div>
+        }
+    </div>
+}
+

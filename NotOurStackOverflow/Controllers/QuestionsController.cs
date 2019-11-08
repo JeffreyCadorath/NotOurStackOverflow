@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity;
+using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.ViewModels;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using NotOurStackOverflow.Models;
 
 namespace NotOurStackOverflow.Controllers
 {
@@ -20,6 +19,27 @@ namespace NotOurStackOverflow.Controllers
         {
             var posts = db.Questions.Include(q => q.User);
             return View(posts.ToList());
+        }
+
+        // add a GET to alter the ordering
+        public ActionResult LandingPage()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if(user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            var usersQuestions = db.Questions.Where(q => q.User == user)
+                .OrderBy(x => x.DatePosted).ToList();
+
+            LandingPageViewModel viewModel = new LandingPageViewModel
+            {
+                CurrentUser = user,
+                AllUsersQuestions = db.Questions.OrderBy(q => q.DatePosted).ToList(),
+                CurrentUserQuestions = usersQuestions,
+            };
+            return View(viewModel);
         }
 
         // GET: Questions/Details/5
