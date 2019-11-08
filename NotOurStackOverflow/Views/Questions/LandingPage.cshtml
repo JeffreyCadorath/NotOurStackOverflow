@@ -9,16 +9,88 @@
 @if (Model.CurrentUserQuestions.Any())
 {
     <div class="card-box">
-        @foreach(var q in Model.CurrentUserQuestions)
+        @foreach (var q in Model.CurrentUserQuestions)
         {
             <div class="question-card">
                 <h3>
                     @q.Title
                     @* link to current question page *@
                 </h3>
-
+                <div class="info-container">
+                    <div class="tag-box">
+                        @foreach(var t in q.Tags)
+                        {
+                            <div class="tag">
+                                @t.Title
+                                @* Link to tag with list of questions *@
+                            </div>
+                        }
+                    </div>
+                    <div class="vote-box">
+                        ++ | --
+                        @* Add upvote/downvote (post) *@
+                    </div>
+                    <div>
+                        Answer (@q.Answers.Count())
+                        @* Action link to answer *@
+                    </div>
+                    <div>
+                        Comment (@q.Comments.Count())
+                        @* Action link to Comment *@
+                    </div>
+                </div>
             </div>
         }
     </div>
 }
+
+<hr />
+
+<div class="button-box">
+    <button>Newest</button>
+    <button>Most Popular</button>
+    <button>Qs and As of the Day</button>
+</div>
+
+<div class="card-box">
+    @foreach (var r in Model.AllUsersQuestions)
+    {
+        <div class="question-card">
+            <h3>
+                @r.Title
+                @* link to current question page *@
+            </h3>
+            <div>
+                @r.User.UserName 
+            </div>
+            <div class="info-container">
+                <div class="tag-box">
+                    @foreach (var t in r.Tags)
+                    {
+                        <div class="tag">
+                            @t.Title
+                            @* Link to tag with list of questions *@
+                        </div>
+                    }
+                </div>
+                <div class="vote-box">
+                    ++ | --
+                    @* Add upvote/downvote (post) *@
+                </div>
+                <div>
+                    Answer (@r.Comments.Count())
+                    @* Action link to answer *@
+                </div>
+                <div>
+                    Comment (@r.Comments.Count())
+                    @* Action link to Comment *@
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="button-box">
+    <button><<</button>
+    <button>>></button>
+</div>
 
