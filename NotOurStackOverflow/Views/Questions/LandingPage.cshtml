@@ -60,8 +60,9 @@
                 @r.Title
                 @* link to current question page *@
             </h3>
-            <div>
-                @r.User.UserName 
+            <div class="user-card">
+                @* link to user profile *@
+                @r.User.UserName | @r.User.Reputation
             </div>
             <div class="info-container">
                 <div class="tag-box">
@@ -74,11 +75,11 @@
                     }
                 </div>
                 <div class="vote-box">
-                    ++ | --
+                    <button id="upvote">++</button>|<button id="downvote">--</button>
                     @* Add upvote/downvote (post) *@
                 </div>
                 <div>
-                    Answer (@r.Comments.Count())
+                    Answer (@r.Answers.Count())
                     @* Action link to answer *@
                 </div>
                 <div>
@@ -89,8 +90,8 @@
         </div>
     }
 </div>
-<div class="button-box">
-    <button><<</button>
-    <button>>></button>
+<div class="rep-button-box">
+    <button id="next-ten"><<</button>
+    <button id="prev-ten">>></button>
 </div>
 
