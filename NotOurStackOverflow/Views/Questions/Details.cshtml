@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<div class="card-box">
+<body class="card-box">
 
     <div class="question-card">
         <h4>
@@ -25,7 +25,7 @@
                 @Model.DatePosted
             </div>
             <div class="tag-box">
-                @foreach(var t in Model.Tags)
+                @foreach (var t in Model.Tags)
                 {
                     <div class="tag">
                         @t.Title
@@ -34,14 +34,122 @@
                 }
             </div>
             <div class="vote-box">
-                <button id="upvote">++(@Model.Votes.Where(v => v.IsUpVote).Count())
+                @* POST *@
+                <button id="upvote">
+                    ++(@Model.Votes.Where(v => v.IsUpVote).Count())
                 </button>
-                 || 
-                <button id="downvote">--(@Model.Votes.Where(v => !v.IsUpVote).Count())
+                ||
+                <button id="downvote">
+                    --(@Model.Votes.Where(v => !v.IsUpVote).Count())
                 </button>
             </div>
-
+            <div>
+                Answer (@Model.Answers.Count())
+                @* Action link to answer *@
+            </div>
+            <div>
+                Comment (@Model.Comments.Count())
+                @* Action link to Comment *@
+            </div>
         </div>
-
     </div>
-</div>
+
+    <div class="answer-box">
+        <h3>Answers</h3>
+        @foreach (var a in Model.Answers)
+        {
+            <div class="answer-card">
+                <div class="user-card">
+                    @Html.ActionLink(a.User.UserName, "Details", new { id = Model.User.Id })
+                    | @a.User.Reputation
+                </div>
+                <p>
+                    @a.Body
+                </p>
+            </div>
+
+            <div class="info-container">
+                <div>
+                    @a.DatePosted
+                </div>
+                <div class="vote-box">
+                    @* POST *@
+                    <button id="upvote">
+                        ++(@a.Votes.Where(v => v.IsUpVote).Count())
+                    </button>
+                    ||
+                    <button id="downvote">
+                        --(@a.Votes.Where(v => !v.IsUpVote).Count())
+                    </button>
+                </div>
+                <div>
+                    Comment (@a.Comments.Count())
+                    @* Action link to Comment *@
+                </div>
+            </div>
+
+            <div class="comment-box">
+                @foreach(var c in a.Comments)
+                {
+                <div class="comment-card">
+                    <div class="user-card">
+                        @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                        | @c.User.Reputation
+                    </div>
+                    <p class="comment-body">
+                        @c.Body
+                    </p>
+                    <div class="info-container">
+                        <div>
+                            @c.DatePosted
+                        </div>
+
+                        <div class="vote-box">
+                            @* POST *@
+                            <button id="upvote">
+                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                            </button>
+                            ||
+                            <button id="downvote">
+                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="comment-box">
+        <h3>Comments</h3>
+        @foreach (var c in Model.Comments)
+        {
+            <div class="comment-card">
+                <div class="user-card">
+                    @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                    | @c.User.Reputation
+                </div>
+                <p class="comment-body">
+                    @c.Body
+                </p>
+                <div class="info-container">
+                    <div>
+                        @c.DatePosted
+                    </div>
+
+                    <div class="vote-box">
+                        @* POST *@
+                        <button id="upvote">
+                            ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                        </button>
+                        ||
+                        <button id="downvote">
+                            --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</body>
