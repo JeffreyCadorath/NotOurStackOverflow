@@ -4,47 +4,44 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="card-box">
 
-<div>
-    <h4>Question</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
+    <div class="question-card">
+        <h4>
+            @Model.Title
+        </h4>
 
-        <dd>
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
+        <div class="user-card">
+            @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id})
+            | @Model.User.Reputation
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </dt>
+        <p class="question-body">
+            @Model.Body
+        </p>
 
-        <dd>
-            @Html.DisplayFor(model => model.DatePosted)
-        </dd>
+        <div class="info-container">
+            <div>
+                @Model.DatePosted
+            </div>
+            <div class="tag-box">
+                @foreach(var t in Model.Tags)
+                {
+                    <div class="tag">
+                        @t.Title
+                        @*Actionlink to q's with tag*@
+                    </div>
+                }
+            </div>
+            <div class="vote-box">
+                <button id="upvote">++(@Model.Votes.Where(v => v.IsUpVote).Count())
+                </button>
+                 || 
+                <button id="downvote">--(@Model.Votes.Where(v => !v.IsUpVote).Count())
+                </button>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-    </dl>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
