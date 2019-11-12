@@ -53,7 +53,7 @@
 </div>
 
 <body class="card-box">
-    @foreach (var r in Model.AllUsersQuestions)
+    @foreach (var r in Model.AllQuestions)
     {
         <div class="question-card">
             <h3>
@@ -79,10 +79,10 @@
                 </div>
                 <div class="vote-box">
                     <button id="upvote">
-                        ++(@r.Votes.Where(v => v.IsUpVote).Count())
+                        ++
                     </button>
                     || 
-                    <button id="downvote">--(@r.Votes.Where(v => v.IsUpVote).Count())
+                    <button id="downvote">--
                     </button>
                     @* Add upvote/downvote (post) *@
                 </div>

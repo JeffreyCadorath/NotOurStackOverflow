@@ -77,6 +77,13 @@ namespace NotOurStackOverflow.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var user = db.Users.Where(x => x.Email == model.Email).FirstOrDefault();
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "No user found.");
+                return View(model);
+            }
+
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, true, false);
             switch (result)
             {

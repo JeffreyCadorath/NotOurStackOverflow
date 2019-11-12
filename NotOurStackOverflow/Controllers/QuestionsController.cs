@@ -41,11 +41,12 @@ namespace NotOurStackOverflow.Controllers
             }
 
             var usersQuestions = businessLogic.AllUserQuestions(user.Id);
+            var allQuestions = businessLogic.AllQuestions();
 
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllUsersQuestions = usersQuestions,
+                AllQuestions = allQuestions,
                 CurrentUserQuestions = usersQuestions,
             };
             return View(viewModel);
