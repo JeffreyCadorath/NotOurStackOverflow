@@ -244,8 +244,6 @@ namespace NotOurStackOverflow.Migrations
                 context.Comments.AddOrUpdate(comment3);
                 context.Comments.AddOrUpdate(comment4);
                 context.Comments.AddOrUpdate(comment5);
-
-                context.SaveChanges();
             }
         }
     }
