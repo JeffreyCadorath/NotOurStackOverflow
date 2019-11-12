@@ -52,7 +52,7 @@
     <button>Qs and As of the Day</button>
 </div>
 
-<div class="card-box">
+<body class="card-box">
     @foreach (var r in Model.AllUsersQuestions)
     {
         <div class="question-card">
@@ -65,6 +65,9 @@
                 @r.User.UserName | @r.User.Reputation
             </div>
             <div class="info-container">
+                <div>
+                    @r.DatePosted
+                </div>
                 <div class="tag-box">
                     @foreach (var t in r.Tags)
                     {
@@ -75,7 +78,12 @@
                     }
                 </div>
                 <div class="vote-box">
-                    <button id="upvote">++</button>|<button id="downvote">--</button>
+                    <button id="upvote">
+                        ++(@r.Votes.Where(v => v.IsUpVote).Count())
+                    </button>
+                    || 
+                    <button id="downvote">--(@r.Votes.Where(v => v.IsUpVote).Count())
+                    </button>
                     @* Add upvote/downvote (post) *@
                 </div>
                 <div>
@@ -89,9 +97,10 @@
             </div>
         </div>
     }
-</div>
-<div class="rep-button-box">
+</body>
+<div class="page-box">
     <button id="next-ten"><<</button>
     <button id="prev-ten">>></button>
 </div>
+
 

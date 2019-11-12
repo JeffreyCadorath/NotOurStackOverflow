@@ -3,40 +3,153 @@
 @{
     ViewBag.Title = "Details";
 }
-<h3>
-    @Html.DisplayFor(model => model.Title)
-</h3>
-<div class="QuestionContainer">
-    <div class="QuestionBody">@Model.Body</div>
-    <div>
-        @foreach (var tag in Model.Tags)
-        {
-            <span class="TagLink">@tag.Title</span>
-        }
-    </div>
-    <div class="QuestionComments">
-        @foreach (var comment in Model.Comments)
-        {
-            <div class="Comment">
-                @comment.Body
-                <div> -- @comment.User.UserName</div>
-            </div>
-        }
-        <p>@Html.ActionLink("Add Comment", "Create", "Comments")</p>
-    </div>
-</div>
 
-<div class="AnswersContainer">
-    @foreach (var answer in Model.Answers)
-    {
-        <div class="AnswerBox">
-            <div class="AnswerBody">@answer.Body</div>
+<body class="card-box">
+
+    <div class="question-card">
+        <h4>
+            @Model.Title
+        </h4>
+
+        <div class="user-card">
+            @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id})
+            | @Model.User.Reputation
         </div>
 
-    }
-    <div>@Html.ActionLink("Submit Answer", "Create", "Answers")</div>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+        <p class="question-body">
+            @Model.Body
+        </p>
+
+        <div class="info-container">
+            <div>
+                @Model.DatePosted
+            </div>
+            <div class="tag-box">
+                @foreach (var t in Model.Tags)
+                {
+                    <div class="tag">
+                        @t.Title
+                        @*Actionlink to q's with tag*@
+                    </div>
+                }
+            </div>
+            <div class="vote-box">
+                @* POST *@
+                <button id="upvote">
+                    ++(@Model.Votes.Where(v => v.IsUpVote).Count())
+                </button>
+                ||
+                <button id="downvote">
+                    --(@Model.Votes.Where(v => !v.IsUpVote).Count())
+                </button>
+            </div>
+            <div>
+                Answer (@Model.Answers.Count())
+                @* Action link to answer *@
+            </div>
+            <div>
+                Comment (@Model.Comments.Count())
+                @* Action link to Comment *@
+            </div>
+        </div>
+    </div>
+
+    <div class="answer-box">
+        <h3>Answers</h3>
+        @foreach (var a in Model.Answers)
+        {
+            <div class="answer-card">
+                <div class="user-card">
+                    @Html.ActionLink(a.User.UserName, "Details", new { id = Model.User.Id })
+                    | @a.User.Reputation
+                </div>
+                <p>
+                    @a.Body
+                </p>
+            </div>
+
+            <div class="info-container">
+                <div>
+                    @a.DatePosted
+                </div>
+                <div class="vote-box">
+                    @* POST *@
+                    <button id="upvote">
+                        ++(@a.Votes.Where(v => v.IsUpVote).Count())
+                    </button>
+                    ||
+                    <button id="downvote">
+                        --(@a.Votes.Where(v => !v.IsUpVote).Count())
+                    </button>
+                </div>
+                <div>
+                    Comment (@a.Comments.Count())
+                    @* Action link to Comment *@
+                </div>
+            </div>
+
+            <div class="comment-box">
+                @foreach(var c in a.Comments)
+                {
+                <div class="comment-card">
+                    <div class="user-card">
+                        @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                        | @c.User.Reputation
+                    </div>
+                    <p class="comment-body">
+                        @c.Body
+                    </p>
+                    <div class="info-container">
+                        <div>
+                            @c.DatePosted
+                        </div>
+
+                        <div class="vote-box">
+                            @* POST *@
+                            <button id="upvote">
+                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                            </button>
+                            ||
+                            <button id="downvote">
+                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="comment-box">
+        <h3>Comments</h3>
+        @foreach (var c in Model.Comments)
+        {
+            <div class="comment-card">
+                <div class="user-card">
+                    @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                    | @c.User.Reputation
+                </div>
+                <p class="comment-body">
+                    @c.Body
+                </p>
+                <div class="info-container">
+                    <div>
+                        @c.DatePosted
+                    </div>
+
+                    <div class="vote-box">
+                        @* POST *@
+                        <button id="upvote">
+                            ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                        </button>
+                        ||
+                        <button id="downvote">
+                            --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</body>

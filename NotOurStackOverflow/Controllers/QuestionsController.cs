@@ -30,7 +30,7 @@ namespace NotOurStackOverflow.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
-            var usersQuestions = db.Questions.Where(q => q.User == user)
+            var usersQuestions = db.Questions.Where(q => q.UserId == user.Id)
                 .OrderBy(x => x.DatePosted).ToList();
 
             LandingPageViewModel viewModel = new LandingPageViewModel
