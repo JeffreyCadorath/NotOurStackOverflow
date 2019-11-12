@@ -18,5 +18,10 @@ namespace NotOurStackOverflow.Models.Helpers
         {
             return dataAccess.GetAllUserQuestions(Id).ToList();
         }
+
+        public List<Question> AllQuestions()
+        {
+            return dataAccess.GetAllQuestions().ToList();
+        }
     }
 }
