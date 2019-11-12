@@ -31,6 +31,7 @@ namespace NotOurStackOverflow.Models
     {
         public int Id { get; set; }
         public virtual ApplicationUser User { get; set; }
+        [ForeignKey("User")]
         public string UserId { get; set; }
         public DateTime? DatePosted { get; set; }
         public string Body { get; set; }
@@ -39,6 +40,12 @@ namespace NotOurStackOverflow.Models
 
     public class Question : Post
     {
+        public Question()
+        {
+            Tags = new HashSet<Tag>();
+            Answers = new HashSet<Answer>();
+            Comments = new HashSet<Comment>();
+        }
         public string Title { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
@@ -46,6 +53,10 @@ namespace NotOurStackOverflow.Models
     }
     public class Tag
     {
+        public Tag()
+        {
+            Questions = new HashSet<Question>();
+        }
         public int Id { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
         public string Title { get; set; }
@@ -57,6 +68,10 @@ namespace NotOurStackOverflow.Models
     }
     public class Answer : Post
     {
+        public Answer()
+        {
+            Comments = new HashSet<Comment>();
+        }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Question Question { get; set; }
         public int QuestionId { get; set; }
