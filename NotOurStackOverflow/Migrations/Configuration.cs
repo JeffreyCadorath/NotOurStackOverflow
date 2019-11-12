@@ -26,27 +26,27 @@ namespace NotOurStackOverflow.Migrations
                 var Ted = new ApplicationUser()
                 {
                     UserName = "TedDansen",
-                    Email = "Ted@email.com"
+                    Email = "Teds@email.com"
                 };
                 var Kyle = new ApplicationUser()
                 {
                     UserName = "KlyeElyk",
-                    Email = "Instructor1@email.com"
+                    Email = "Kyles@email.com"
                 };
                 var Stan = new ApplicationUser()
                 {
                     UserName = "StanDarsh",
-                    Email = "Instructor2@email.com"
+                    Email = "Stans@email.com"
                 };
                 var BigDan = new ApplicationUser()
                 {
                     UserName = "DanBiglittle",
-                    Email = "Employer1@email.com"
+                    Email = "BigDans@email.com"
                 };
                 var LittleDan = new ApplicationUser()
                 {
                     UserName = "DanLittlebig",
-                    Email = "Employer2@email.com"
+                    Email = "LittleDans@email.com"
                 };
 
                 //Created Tags
@@ -169,7 +169,6 @@ namespace NotOurStackOverflow.Migrations
                     UserId = LittleDan.Id,
                     Id = 5,
                 };
-
 
                 //Created Comments
                 var comment1 = new Comment
