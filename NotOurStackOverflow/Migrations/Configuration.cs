@@ -53,17 +53,14 @@ namespace NotOurStackOverflow.Migrations
                 var Tag1 = new Tag
                 {
                     Title = "C++",
-                    Id = 1,
                 };
                 var Tag2 = new Tag
                 {
                     Title = "Ears",
-                    Id = 2,
                 };
                 var Tag3 = new Tag
                 {
                     Title = "Animals",
-                    Id = 3,
                 };
 
                 //Created Questions
@@ -74,7 +71,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Stan,
                     UserId = Stan.Id,
-                    Id = 1,
                     Tags = { Tag1 }
                 };
                 var Question2 = new Question
@@ -84,7 +80,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Ted,
                     UserId = Ted.Id,
-                    Id = 2,
                     Tags = { Tag2 }
                 };
                 var Question3 = new Question
@@ -94,7 +89,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Kyle,
                     UserId = Kyle.Id,
-                    Id = 3,
                     Tags = { Tag3 }
                 };
                 var Question4 = new Question
@@ -104,7 +98,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = LittleDan,
                     UserId = LittleDan.Id,
-                    Id = 4,
                     Tags = { Tag2 }
                 };
                 var Question5 = new Question
@@ -114,7 +107,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = BigDan,
                     UserId = BigDan.Id,
-                    Id = 5,
                     Tags = { Tag1 }
                 };
 
@@ -127,7 +119,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Kyle,
                     UserId = Kyle.Id,
-                    Id = 1,
                 };
                 var Answer2 = new Answer()
                 {
@@ -137,7 +128,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Stan,
                     UserId = Stan.Id,
-                    Id = 2,
                 };
                 var Answer3 = new Answer()
                 {
@@ -147,7 +137,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = BigDan,
                     UserId = BigDan.Id,
-                    Id = 3,
                 };
                 var Answer4 = new Answer()
                 {
@@ -157,7 +146,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Ted,
                     UserId = Ted.Id,
-                    Id = 4,
                 };
                 var Answer5 = new Answer()
                 {
@@ -167,7 +155,6 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = LittleDan,
                     UserId = LittleDan.Id,
-                    Id = 5,
                 };
 
                 //Created Comments
@@ -177,7 +164,6 @@ namespace NotOurStackOverflow.Migrations
                     User = LittleDan,
                     Post = Question1,
                     DatePosted = DateTime.Now,
-                    Id = 1
                 };
                 var comment2 = new Comment
                 {
@@ -185,7 +171,6 @@ namespace NotOurStackOverflow.Migrations
                     User = Kyle,
                     Post = Question2,
                     DatePosted = DateTime.Now,
-                    Id = 2
                 };
                 var comment3 = new Comment
                 {
@@ -193,7 +178,6 @@ namespace NotOurStackOverflow.Migrations
                     User = BigDan,
                     Post = Question3,
                     DatePosted = DateTime.Now,
-                    Id = 3
                 };
                 var comment4 = new Comment
                 {
@@ -201,7 +185,6 @@ namespace NotOurStackOverflow.Migrations
                     User = Kyle,
                     Post = Question4,
                     DatePosted = DateTime.Now,
-                    Id = 4
                 };
                 var comment5 = new Comment
                 {
@@ -209,7 +192,6 @@ namespace NotOurStackOverflow.Migrations
                     User = Stan,
                     Post = Question5,
                     DatePosted = DateTime.Now,
-                    Id = 5
                 };
 
                 //Seeded Users
