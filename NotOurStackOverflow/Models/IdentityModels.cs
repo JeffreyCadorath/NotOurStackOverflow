@@ -12,8 +12,13 @@ namespace NotOurStackOverflow.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public virtual ICollection<Question> Questions { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+        public ApplicationUser()
+        {
+            Posts = new HashSet<Post>();
+            VoteMade = new HashSet<Vote>();
+            VoteRecieved = new HashSet<Vote>(); 
+        }
+        public virtual ICollection<Post> Posts { get; set; }
         [InverseProperty("VotingUser")]
         public virtual ICollection<Vote> VoteMade { get; set; }
         [InverseProperty("PostUser")]
@@ -50,6 +55,7 @@ namespace NotOurStackOverflow.Models
         public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        
     }
     public class Tag
     {

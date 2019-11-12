@@ -7,13 +7,13 @@ namespace NotOurStackOverflow.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ChangedPostClass : IMigrationMetadata
+    public sealed partial class updatedApplicationUser : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangedPostClass));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(updatedApplicationUser));
         
         string IMigrationMetadata.Id
         {
-            get { return "201911121637534_ChangedPostClass"; }
+            get { return "201911122018591_updatedApplicationUser"; }
         }
         
         string IMigrationMetadata.Source
