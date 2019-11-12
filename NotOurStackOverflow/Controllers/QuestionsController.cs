@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.Helpers;
 using NotOurStackOverflow.Models.ViewModels;
 using System;
 using System.Data;
@@ -12,7 +13,16 @@ namespace NotOurStackOverflow.Controllers
 {
     public class QuestionsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+        private DBDataAccess dataAccess;
+        private BusinessLogic businessLogic;
+        
+        public QuestionsController()
+        {
+            db = new ApplicationDbContext();
+            dataAccess = new DBDataAccess(db);
+            businessLogic = new BusinessLogic(dataAccess);
+        }
 
         // GET: Questions
         public ActionResult Index()
@@ -30,13 +40,12 @@ namespace NotOurStackOverflow.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
-            var usersQuestions = db.Questions.Where(q => q.UserId == user.Id)
-                .OrderBy(x => x.DatePosted).ToList();
+            var usersQuestions = businessLogic.AllUserQuestions(user.Id);
 
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllUsersQuestions = db.Questions.OrderBy(q => q.DatePosted).ToList(),
+                AllUsersQuestions = usersQuestions,
                 CurrentUserQuestions = usersQuestions,
             };
             return View(viewModel);
