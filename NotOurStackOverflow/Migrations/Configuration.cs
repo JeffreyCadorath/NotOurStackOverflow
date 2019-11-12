@@ -49,13 +49,6 @@ namespace NotOurStackOverflow.Migrations
                     Email = "Employer2@email.com"
                 };
 
-                //Seeded Users
-                manager.Create(Ted, "Password1!");
-                manager.Create(Kyle, "Password1!");
-                manager.Create(Stan, "Password1!");
-                manager.Create(BigDan, "Password1!");
-                manager.Create(LittleDan, "Password1!");
-
                 //Created Tags
                 var Tag1 = new Tag
                 {
@@ -66,17 +59,12 @@ namespace NotOurStackOverflow.Migrations
                 {
                     Title = "Ears",
                     Id = 2,
-                }; 
+                };
                 var Tag3 = new Tag
                 {
                     Title = "Animals",
                     Id = 3,
                 };
-
-                //Seeded Tags
-                context.Tags.Add(Tag1);
-                context.Tags.Add(Tag2);
-                context.Tags.Add(Tag3);
 
                 //Created Questions
                 var Question1 = new Question
@@ -86,7 +74,8 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Stan,
                     UserId = Stan.Id,
-                    Id = 1
+                    Id = 1,
+                    Tags = { Tag1 }
                 };
                 var Question2 = new Question
                 {
@@ -95,7 +84,8 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Ted,
                     UserId = Ted.Id,
-                    Id = 2
+                    Id = 2,
+                    Tags = { Tag2 }
                 };
                 var Question3 = new Question
                 {
@@ -104,7 +94,8 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = Kyle,
                     UserId = Kyle.Id,
-                    Id = 3
+                    Id = 3,
+                    Tags = { Tag3 }
                 };
                 var Question4 = new Question
                 {
@@ -113,8 +104,8 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = LittleDan,
                     UserId = LittleDan.Id,
-                    Id = 4
-                    
+                    Id = 4,
+                    Tags = { Tag2 }
                 };
                 var Question5 = new Question
                 {
@@ -123,22 +114,9 @@ namespace NotOurStackOverflow.Migrations
                     DatePosted = DateTime.Now,
                     User = BigDan,
                     UserId = BigDan.Id,
-                    Id = 5
+                    Id = 5,
+                    Tags = { Tag1 }
                 };
-
-                //Add Tags to Questions
-                Question1.Tags.Add(Tag1);
-                Question2.Tags.Add(Tag2);
-                Question3.Tags.Add(Tag3);
-                Question4.Tags.Add(Tag1);
-                Question5.Tags.Add(Tag2);
-
-                //Seeded Questions
-                context.Questions.AddOrUpdate(Question1);
-                context.Questions.AddOrUpdate(Question2);
-                context.Questions.AddOrUpdate(Question3);
-                context.Questions.AddOrUpdate(Question4);
-                context.Questions.AddOrUpdate(Question5);
 
                 //Created Answers
                 var Answer1 = new Answer()
@@ -192,21 +170,13 @@ namespace NotOurStackOverflow.Migrations
                     Id = 5,
                 };
 
-                //Seeded Answers
-                context.Answers.AddOrUpdate(Answer1);
-                context.Answers.AddOrUpdate(Answer2);
-                context.Answers.AddOrUpdate(Answer3);
-                context.Answers.AddOrUpdate(Answer4);
-                context.Answers.AddOrUpdate(Answer5);
 
                 //Created Comments
                 var comment1 = new Comment
                 {
                     Body = "WHO CARES THIS MUCH ABOUT DOG EARS",
                     User = LittleDan,
-                    UserId = LittleDan.Id,
                     Post = Question1,
-                    PostId = Question1.Id,
                     DatePosted = DateTime.Now,
                     Id = 1
                 };
@@ -214,9 +184,7 @@ namespace NotOurStackOverflow.Migrations
                 {
                     Body = "WHO CARES THIS MUCH ABOUT RABBIT EARS",
                     User = Kyle,
-                    UserId = Kyle.Id,
                     Post = Question2,
-                    PostId = Question2.Id,
                     DatePosted = DateTime.Now,
                     Id = 2
                 };
@@ -224,9 +192,7 @@ namespace NotOurStackOverflow.Migrations
                 {
                     Body = "WHO CARES THIS MUCH ABOUT BIRD EARS",
                     User = BigDan,
-                    UserId = BigDan.Id,
                     Post = Question3,
-                    PostId = Question3.Id,
                     DatePosted = DateTime.Now,
                     Id = 3
                 };
@@ -234,9 +200,7 @@ namespace NotOurStackOverflow.Migrations
                 {
                     Body = "WHO CARES THIS MUCH ABOUT FISH EARS",
                     User = Kyle,
-                    UserId = Kyle.Id,
                     Post = Question4,
-                    PostId = Question4.Id,
                     DatePosted = DateTime.Now,
                     Id = 4
                 };
@@ -244,12 +208,36 @@ namespace NotOurStackOverflow.Migrations
                 {
                     Body = "WHO CARES THIS MUCH ABOUT REPTILE EARS",
                     User = Stan,
-                    UserId = Stan.Id,
                     Post = Question5,
-                    PostId = Question5.Id,
                     DatePosted = DateTime.Now,
                     Id = 5
                 };
+
+                //Seeded Users
+                manager.Create(Ted, "Password1!");
+                manager.Create(Kyle, "Password1!");
+                manager.Create(Stan, "Password1!");
+                manager.Create(BigDan, "Password1!");
+                manager.Create(LittleDan, "Password1!");
+
+                //Seeded Tags
+                context.Tags.AddOrUpdate(Tag1);
+                context.Tags.AddOrUpdate(Tag2);
+                context.Tags.AddOrUpdate(Tag3);
+
+                //Seeded Questions
+                context.Questions.AddOrUpdate(Question1);
+                context.Questions.AddOrUpdate(Question2);
+                context.Questions.AddOrUpdate(Question3);
+                context.Questions.AddOrUpdate(Question4);
+                context.Questions.AddOrUpdate(Question5);
+
+                //Seeded Answers
+                context.Answers.AddOrUpdate(Answer1);
+                context.Answers.AddOrUpdate(Answer2);
+                context.Answers.AddOrUpdate(Answer3);
+                context.Answers.AddOrUpdate(Answer4);
+                context.Answers.AddOrUpdate(Answer5);
 
                 //Seeded Comments
                 context.Comments.AddOrUpdate(comment1);
@@ -257,6 +245,8 @@ namespace NotOurStackOverflow.Migrations
                 context.Comments.AddOrUpdate(comment3);
                 context.Comments.AddOrUpdate(comment4);
                 context.Comments.AddOrUpdate(comment5);
+
+                context.SaveChanges();
             }
         }
     }
