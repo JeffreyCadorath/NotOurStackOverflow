@@ -177,9 +177,9 @@
     <Compile Include="Migrations\201911072005246_Initial.Designer.cs">
       <DependentUpon>201911072005246_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911121637534_ChangedPostClass.cs" />
-    <Compile Include="Migrations\201911121637534_ChangedPostClass.Designer.cs">
-      <DependentUpon>201911121637534_ChangedPostClass.cs</DependentUpon>
+    <Compile Include="Migrations\201911122018591_updatedApplicationUser.cs" />
+    <Compile Include="Migrations\201911122018591_updatedApplicationUser.Designer.cs">
+      <DependentUpon>201911122018591_updatedApplicationUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -265,8 +265,8 @@
     <EmbeddedResource Include="Migrations\201911072005246_Initial.resx">
       <DependentUpon>201911072005246_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911121637534_ChangedPostClass.resx">
-      <DependentUpon>201911121637534_ChangedPostClass.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911122018591_updatedApplicationUser.resx">
+      <DependentUpon>201911122018591_updatedApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
