@@ -35,7 +35,7 @@
     <div class="form-group">
         <label class="control-label col-md-2">Tags:</label>
         <div class="col-md-10">
-            @Html.DropDownList("TagId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ListBox("TagId", (MultiSelectList)ViewBag.ListTest,new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
         </div>
     </div>

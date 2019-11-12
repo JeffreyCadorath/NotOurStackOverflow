@@ -3,46 +3,38 @@
 @{
     ViewBag.Title = "Details";
 }
+<h3>
+    @Html.DisplayFor(model => model.Title)
+</h3>
+<div class="QuestionContainer">
+    <div class="QuestionBody">@Model.Body</div>
+    <div>
+        @foreach (var tag in Model.Tags)
+        {
+            <span class="TagLink">@tag.Title</span>
+        }
+    </div>
+    <div class="QuestionComments">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="Comment">
+                @comment.Body
+                <div> -- @comment.User.UserName</div>
+            </div>
+        }
+        <p>@Html.ActionLink("Add Comment", "Create", "Comments")</p>
+    </div>
+</div>
 
-<h2>Details</h2>
+<div class="AnswersContainer">
+    @foreach (var answer in Model.Answers)
+    {
+        <div class="AnswerBox">
+            <div class="AnswerBody">@answer.Body</div>
+        </div>
 
-<div>
-    <h4>Question</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DatePosted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-    </dl>
+    }
+    <div>@Html.ActionLink("Submit Answer", "Create", "Answers")</div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
