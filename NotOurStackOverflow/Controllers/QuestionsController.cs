@@ -190,8 +190,18 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TagId,Body,Title")] Question question)
+        public ActionResult Create(List<int> TagId, string body, string Title)
         {
+            Question question = new Question
+            {
+                Body = body,
+                Tags = new List<Tag>(),
+                Title = Title,
+            };
+            foreach(var tagId in TagId)
+            {
+                question.Tags.Add(db.Tags.Find(tagId));
+            }
             question.UserId = User.Identity.GetUserId();
             question.DatePosted = DateTime.Now;
             if (ModelState.IsValid)
@@ -200,8 +210,6 @@ namespace NotOurStackOverflow.Controllers
                 db.SaveChanges();
                 return RedirectToAction("LandingPage");
             }
-
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", question.UserId);
             return View(question);
         }
 
