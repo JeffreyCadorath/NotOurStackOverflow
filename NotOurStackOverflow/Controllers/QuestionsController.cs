@@ -58,6 +58,45 @@ namespace NotOurStackOverflow.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public ActionResult LandingPage(int postId, bool isPositive)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+
+            Post post = db.Posts.Find(postId);
+            ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
+            ApplicationUser votedUser = db.Users.Find(post.UserId);
+
+            if (post == null || votingUser == null || votedUser == null)
+            {
+                return HttpNotFound();
+            }
+
+            Vote newVote = new Vote
+            {
+                IsUpVote = isPositive,
+                Post = post,
+                PostId = post.Id,
+                VotingUser = votingUser,
+                VotingUserId = votingUser.Id,
+                PostUser = votedUser,
+                PostUserId = votedUser.Id,
+            };
+
+            db.Votes.Add(newVote);
+            db.SaveChanges();
+
+            post.Votes.Add(newVote);
+            votingUser.VoteMade.Add(newVote);
+            votedUser.VoteRecieved.Add(newVote);
+            db.SaveChanges();
+
+            return RedirectToAction("LandingPage");
+        }
+
         // GET: Questions/Details/5
         public ActionResult Details(int? id)
         {
@@ -71,6 +110,48 @@ namespace NotOurStackOverflow.Controllers
                 return HttpNotFound();
             }
             return View(question);
+        }
+        
+        [HttpPost]
+        public ActionResult Details(int? id, int postId, bool isPositive    )
+        {
+            // create a vote the the accepted parameters
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+
+            Question currentQuestion = db.Questions.Find(id);
+
+            Post post = db.Posts.Find(postId);
+            ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
+            ApplicationUser votedUser = db.Users.Find(post.UserId);
+
+            if (post == null || votingUser == null || votedUser == null)
+            {
+                return HttpNotFound();
+            }
+
+            Vote newVote = new Vote
+            {
+                IsUpVote = isPositive,
+                Post = post,
+                PostId = post.Id,
+                VotingUser = votingUser,
+                VotingUserId = votingUser.Id,
+                PostUser = votedUser,
+                PostUserId = votedUser.Id,
+            };
+
+            db.Votes.Add(newVote);
+            db.SaveChanges();
+
+            post.Votes.Add(newVote);
+            votingUser.VoteMade.Add(newVote);
+            votedUser.VoteRecieved.Add(newVote);
+            db.SaveChanges();
+
+            return View("Details", currentQuestion);
         }
 
         // GET: Questions/Create

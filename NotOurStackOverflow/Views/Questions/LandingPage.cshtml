@@ -33,8 +33,20 @@ else
                         }
                     </div>
                     <div class="vote-box">
-                        ++ | --
-                        @* Add upvote/downvote (post) *@
+                        @using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("isPositive", true)
+                            @Html.Hidden("postId", q.Id)
+                            <input type="submit" value="++" />
+                        }
+                        ||
+
+                        @using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("isPositive", false)
+                            @Html.Hidden("postId", q.Id)
+                            <input type="submit" value="--" />
+                        }
                     </div>
                     <div>
                         Answer (@q.Answers.Count())
@@ -83,8 +95,20 @@ else
                     }
                 </div>
                 <div class="vote-box">
-                    ++ || --
-                    @* Add upvote/downvote (post) *@
+                    @using (Html.BeginForm(FormMethod.Post))
+                    {
+                        @Html.Hidden("isPositive", true)
+                        @Html.Hidden("postId", r.Id)
+                        <input type="submit" value="++" />
+                    }
+                    ||
+
+                    @using (Html.BeginForm(FormMethod.Post))
+                    {
+                        @Html.Hidden("isPositive", false)
+                        @Html.Hidden("postId", r.Id)
+                        <input type="submit" value="--" />
+                    }
                 </div>
                 <div>
                     Answer (@r.Answers.Count())
