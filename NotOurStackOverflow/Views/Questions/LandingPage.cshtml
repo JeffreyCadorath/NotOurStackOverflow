@@ -4,7 +4,14 @@
     ViewBag.Title = "LandingPage";
 }
 
-<h2>Welcome Home, @Model.CurrentUser.UserName. We've missed you.</h2>
+@if (Model.CurrentUser != null)
+{
+    <h3>Welcome Home, @Model.CurrentUser.UserName. We've missed you.</h3>
+}
+else
+{
+    <h4>@Html.ActionLink("Sign up with NOSO", "Register", "Account") to start asking questions, giving answers, voting and earning reputation.</h4>
+}
 
 @if (Model.CurrentUserQuestions.Any())
 {
@@ -12,13 +19,12 @@
         @foreach (var q in Model.CurrentUserQuestions)
         {
             <div class="question-card">
-                <h3>
-                    @q.Title
-                    @* link to current question page *@
-                </h3>
+                <h4>
+                    @Html.ActionLink(q.Title, "Details", "Questions", new { Id = q.Id }, new { @class = "question-title-link" })
+                </h4>
                 <div class="info-container">
                     <div class="tag-box">
-                        @foreach(var t in q.Tags)
+                        @foreach (var t in q.Tags)
                         {
                             <div class="tag">
                                 @t.Title
@@ -55,47 +61,47 @@
 <body class="card-box">
     @foreach (var r in Model.AllQuestions)
     {
-        <div class="question-card">
-            <h3>
-                @r.Title
-                @* link to current question page *@
-            </h3>
-            <div class="user-card">
-                @* link to user profile *@
-                @r.User.UserName | @r.User.Reputation
+    <div class="question-card">
+        <h4>
+            @Html.ActionLink(r.Title, "Details", "Questions", new { Id = r.Id }, new { @class = "question-title-link" })
+        </h4>
+        <div class="user-card">
+            @* link to user profile *@
+            @r.User.UserName | @r.User.Reputation
+        </div>
+        <div class="info-container">
+            <div>
+                @r.DatePosted
             </div>
-            <div class="info-container">
-                <div>
-                    @r.DatePosted
-                </div>
-                <div class="tag-box">
-                    @foreach (var t in r.Tags)
-                    {
-                        <div class="tag">
-                            @t.Title
-                            @* Link to tag with list of questions *@
-                        </div>
-                    }
-                </div>
-                <div class="vote-box">
-                    <button id="upvote">
-                        ++
-                    </button>
-                    || 
-                    <button id="downvote">--
-                    </button>
-                    @* Add upvote/downvote (post) *@
-                </div>
-                <div>
-                    Answer (@r.Answers.Count())
-                    @* Action link to answer *@
-                </div>
-                <div>
-                    Comment (@r.Comments.Count())
-                    @* Action link to Comment *@
-                </div>
+            <div class="tag-box">
+                @foreach (var t in r.Tags)
+                {
+                    <div class="tag">
+                        @t.Title
+                        @* Link to tag with list of questions *@
+                    </div>
+                }
+            </div>
+            <div class="vote-box">
+                <button id="upvote">
+                    ++
+                </button>
+                ||
+                <button id="downvote">
+                    --
+                </button>
+                @* Add upvote/downvote (post) *@
+            </div>
+            <div>
+                Answer (@r.Answers.Count())
+                @* Action link to answer *@
+            </div>
+            <div>
+                Comment (@r.Comments.Count())
+                @* Action link to Comment *@
             </div>
         </div>
+    </div>
     }
 </body>
 <div class="page-box">

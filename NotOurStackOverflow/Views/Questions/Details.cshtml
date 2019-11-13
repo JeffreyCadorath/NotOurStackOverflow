@@ -12,7 +12,7 @@
         </h4>
 
         <div class="user-card">
-            @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id})
+            @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id })
             | @Model.User.Reputation
         </div>
 
@@ -36,11 +36,11 @@
             <div class="vote-box">
                 @* POST *@
                 <button id="upvote">
-                    ++(@Model.Votes.Where(v => v.IsUpVote).Count())
+                    ++
                 </button>
                 ||
                 <button id="downvote">
-                    --(@Model.Votes.Where(v => !v.IsUpVote).Count())
+                    --
                 </button>
             </div>
             <div>
@@ -54,8 +54,52 @@
         </div>
     </div>
 
+
+    @if (Model.Comments.Any())
+    {
+        <div class="comment-box">
+            <h4>Comments</h4>
+            @foreach (var c in Model.Comments)
+            {
+                <div class="comment-card">
+                    <div class="user-card">
+                        @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                        | @c.User.Reputation
+                    </div>
+                    <p class="comment-body">
+                        @c.Body
+                    </p>
+                    <div class="info-container">
+                        <div>
+                            @c.DatePosted
+                        </div>
+
+                        <div class="vote-box">
+                            @* POST *@
+                            <button id="upvote">
+                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                            </button>
+                            ||
+                            <button id="downvote">
+                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
     <div class="answer-box">
-        <h3>Answers</h3>
+        <h4>Answers</h4>
+        @if (!Model.Answers.Any())
+        {
+            <div>
+                @*Link to adding an answer*@
+                Looks like there are no Answers to this question yet. Can you add one?
+            </div>
+        }
+
         @foreach (var a in Model.Answers)
         {
             <div class="answer-card">
@@ -89,66 +133,34 @@
             </div>
 
             <div class="comment-box">
-                @foreach(var c in a.Comments)
+                @foreach (var c in a.Comments)
                 {
-                <div class="comment-card">
-                    <div class="user-card">
-                        @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
-                        | @c.User.Reputation
-                    </div>
-                    <p class="comment-body">
-                        @c.Body
-                    </p>
-                    <div class="info-container">
-                        <div>
-                            @c.DatePosted
+                    <div class="comment-card">
+                        <div class="user-card">
+                            @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                            | @c.User.Reputation
                         </div>
+                        <p class="comment-body">
+                            @c.Body
+                        </p>
+                        <div class="info-container">
+                            <div>
+                                @c.DatePosted
+                            </div>
 
-                        <div class="vote-box">
-                            @* POST *@
-                            <button id="upvote">
-                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
-                            </button>
-                            ||
-                            <button id="downvote">
-                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
-                            </button>
+                            <div class="vote-box">
+                                @* POST *@
+                                <button id="upvote">
+                                    ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                                </button>
+                                ||
+                                <button id="downvote">
+                                    --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
-            </div>
-        }
-    </div>
-
-    <div class="comment-box">
-        <h3>Comments</h3>
-        @foreach (var c in Model.Comments)
-        {
-            <div class="comment-card">
-                <div class="user-card">
-                    @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
-                    | @c.User.Reputation
-                </div>
-                <p class="comment-body">
-                    @c.Body
-                </p>
-                <div class="info-container">
-                    <div>
-                        @c.DatePosted
-                    </div>
-
-                    <div class="vote-box">
-                        @* POST *@
-                        <button id="upvote">
-                            ++(@c.Votes.Where(v => v.IsUpVote).Count())
-                        </button>
-                        ||
-                        <button id="downvote">
-                            --(@c.Votes.Where(v => !v.IsUpVote).Count())
-                        </button>
-                    </div>
-                </div>
             </div>
         }
     </div>

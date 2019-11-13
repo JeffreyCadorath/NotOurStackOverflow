@@ -3,6 +3,7 @@ using NotOurStackOverflow.Models;
 using NotOurStackOverflow.Models.Helpers;
 using NotOurStackOverflow.Models.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -35,12 +36,13 @@ namespace NotOurStackOverflow.Controllers
         public ActionResult LandingPage()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
-            if(user == null)
+            List<Question> usersQuestions = new List<Question>();
+                
+            if (user != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                usersQuestions = businessLogic.AllUserQuestions(user.Id);
             }
 
-            var usersQuestions = businessLogic.AllUserQuestions(user.Id);
             var allQuestions = businessLogic.AllQuestions();
 
             LandingPageViewModel viewModel = new LandingPageViewModel
@@ -70,6 +72,13 @@ namespace NotOurStackOverflow.Controllers
         // GET: Questions/Create
         public ActionResult Create()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+            
             ViewBag.TagId = new MultiSelectList(db.Tags, "Id", "Title");
             return View();
         }
@@ -87,7 +96,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 db.Posts.Add(question);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("LandingPage");
             }
 
             ViewBag.UserId = new SelectList(db.Users, "Id", "Email", question.UserId);
