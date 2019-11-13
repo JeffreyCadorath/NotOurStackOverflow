@@ -48,12 +48,13 @@ namespace NotOurStackOverflow.Controllers
             {
                 allQuestions = businessLogic.AllQuestions();
             }
-            int Page = page == null ? 1 : (int)page;
+            int viewPage = page == null ? 1 : (int)page;
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllQuestions = allQuestions.Skip((Page-1)*10).Take(10).ToList(),
+                AllQuestions = allQuestions.Skip((viewPage-1)*10).Take(10).ToList(),
                 CurrentUserQuestions = usersQuestions,
+                Page = viewPage,
             };
             return View(viewModel);
         }
