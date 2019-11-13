@@ -27,7 +27,7 @@ else
                         @foreach (var t in q.Tags)
                         {
                             <div class="tag">
-                                @t.Title
+                                @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new {Id = t.Id }, null)
                                 @* Link to tag with list of questions *@
                             </div>
                         }
@@ -88,10 +88,10 @@ else
                 <div class="tag-box">
                     @foreach (var t in r.Tags)
                     {
-                        <div class="tag">
-                            @t.Title
-                            @* Link to tag with list of questions *@
-                        </div>
+                    <div class="tag">
+                        @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, null)
+                        @* Link to tag with list of questions *@
+                    </div>
                     }
                 </div>
                 <div class="vote-box">
