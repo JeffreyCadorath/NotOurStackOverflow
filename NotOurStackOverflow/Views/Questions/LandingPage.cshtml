@@ -53,9 +53,9 @@ else
 <hr />
 
 <div class="button-box">
-    <button>Newest</button>
-    <button>Most Popular</button>
-    <button>Qs and As of the Day</button>
+    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "new" })';return false;">Newest</button>
+    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "Popular" })';return false;">Most Popular</button>
+    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "OfDay" })';return false;">Qs and As of the Day</button>
 </div>
 
 <body class="card-box">
@@ -106,10 +106,10 @@ else
 </body>
 <div class="page-box">
     @if (Model.Page > 1)
-    {<button id="prev-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = Model.Page - 1 })';return false;"><<</button>}
+    {<button id="prev-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = Model.Page - 1, sort = Model.sortMethod })';return false;"><<</button>}
     @if (Model.Page + 1 < Math.Ceiling((decimal)(Model.AllQuestions.Count / 10)))
     {
-        <button id="next-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new {page = Model.Page + 1 })';return false;">>></button>
+        <button id="next-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new {page = Model.Page + 1, sort = Model.sortMethod })';return false;">>></button>
     }
 </div>
 

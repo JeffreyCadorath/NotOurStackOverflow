@@ -11,6 +11,7 @@ namespace NotOurStackOverflow.Models.ViewModels
         public ICollection<Question> AllQuestions { get; set; }
         public ICollection<Question> CurrentUserQuestions { get; set; }
         public int Page { get; set; }
+        public string sortMethod { get; set; }
 
         public LandingPageViewModel()
         {
