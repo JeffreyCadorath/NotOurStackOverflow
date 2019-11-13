@@ -27,7 +27,7 @@ else
                         @foreach (var t in q.Tags)
                         {
                             <div class="tag">
-                                @t.Title
+                                @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new {Id = t.Id }, null)
                                 @* Link to tag with list of questions *@
                             </div>
                         }
@@ -53,64 +53,60 @@ else
 <hr />
 
 <div class="button-box">
-    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "new" })';return false;">Newest</button>
-    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "Popular" })';return false;">Most Popular</button>
-    <button onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = 1, sort = "OfDay" })';return false;">Qs and As of the Day</button>
+    <button>Newest</button>
+    <button>Most Popular</button>
+    <button>Qs and As of the Day</button>
 </div>
 
 <body class="card-box">
     @foreach (var r in Model.AllQuestions)
     {
-        <div class="question-card">
-            <h4>
-                @Html.ActionLink(r.Title, "Details", "Questions", new { Id = r.Id }, new { @class = "question-title-link" })
-            </h4>
-            <div class="user-card">
-                @* link to user profile *@
-                @r.User.UserName | @r.User.Reputation
+    <div class="question-card">
+        <h4>
+            @Html.ActionLink(r.Title, "Details", "Questions", new { Id = r.Id }, new { @class = "question-title-link" })
+        </h4>
+        <div class="user-card">
+            @* link to user profile *@
+            @r.User.UserName | @r.User.Reputation
+        </div>
+        <div class="info-container">
+            <div>
+                @r.DatePosted
             </div>
-            <div class="info-container">
-                <div>
-                    @r.DatePosted
-                </div>
-                <div class="tag-box">
-                    @foreach (var t in r.Tags)
-                    {
-                        <div class="tag">
-                            @t.Title
-                            @* Link to tag with list of questions *@
-                        </div>
-                    }
-                </div>
-                <div class="vote-box">
-                    <button id="upvote">
-                        ++
-                    </button>
-                    ||
-                    <button id="downvote">
-                        --
-                    </button>
-                    @* Add upvote/downvote (post) *@
-                </div>
-                <div>
-                    Answer (@r.Answers.Count())
-                    @* Action link to answer *@
-                </div>
-                <div>
-                    Comment (@r.Comments.Count())
-                    @* Action link to Comment *@
-                </div>
+            <div class="tag-box">
+                @foreach (var t in r.Tags)
+                {
+                    <div class="tag">
+                        @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new {Id = t.Id }, null)
+                        @* Link to tag with list of questions *@
+                    </div>
+                }
+            </div>
+            <div class="vote-box">
+                <button id="upvote">
+                    ++
+                </button>
+                ||
+                <button id="downvote">
+                    --
+                </button>
+                @* Add upvote/downvote (post) *@
+            </div>
+            <div>
+                Answer (@r.Answers.Count())
+                @* Action link to answer *@
+            </div>
+            <div>
+                Comment (@r.Comments.Count)
+                @* Action link to Comment *@
             </div>
         </div>
+    </div>
     }
 </body>
 <div class="page-box">
-    @if (Model.Page > 1)
-    {<button id="prev-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new { page = Model.Page - 1, sort = Model.sortMethod })';return false;"><<</button>}
-    @if (Model.Page + 1 < Math.Ceiling((decimal)(Model.AllQuestions.Count / 10)))
-    {
-        <button id="next-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new {page = Model.Page + 1, sort = Model.sortMethod })';return false;">>></button>
-    }
+    <button id="next-ten"><<</button>
+    <button id="prev-ten">>></button>
 </div>
 
 
