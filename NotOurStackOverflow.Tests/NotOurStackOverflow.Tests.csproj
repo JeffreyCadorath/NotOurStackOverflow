@@ -116,12 +116,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NotOurStackOverflow\NotOurStackOverflow.csproj">
-      <Project>{67005C83-2644-42B7-B7A4-2D2799B988E1}</Project>
-      <Name>NotOurStackOverflow</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
