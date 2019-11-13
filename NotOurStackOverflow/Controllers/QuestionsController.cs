@@ -53,14 +53,16 @@ namespace NotOurStackOverflow.Controllers
             if(Sort == "Popular")
             {
                 allQuestions = allQuestions.OrderByDescending(q => q.Answers.Count + q.Comments.Count).ToList();
-            } else if(Sort == "OfDay")
+            } 
+            else if(Sort == "OfDay")
             {
                 var today = DateTime.Today;
 
                 allQuestions = allQuestions.OrderByDescending(
                     q => q.Answers.Where(a => a.DatePosted.Value.Date == today).ToList().Count +
                     q.Comments.Where(c => c.DatePosted.Value.Date == today).ToList().Count).ToList();
-            } else
+            } 
+            else
             {
                 allQuestions = allQuestions.OrderByDescending(q => q.DatePosted.Value).ToList();
             }
