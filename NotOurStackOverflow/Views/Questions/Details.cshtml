@@ -35,13 +35,7 @@
             </div>
             <div class="vote-box">
                 @* POST *@
-                <button id="upvote">
-                    ++
-                </button>
-                ||
-                <button id="downvote">
-                    --
-                </button>
+                ++ || --
             </div>
             <div>
                 Answer (@Model.Answers.Count())
@@ -76,13 +70,7 @@
 
                         <div class="vote-box">
                             @* POST *@
-                            <button id="upvote">
-                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
-                            </button>
-                            ||
-                            <button id="downvote">
-                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
-                            </button>
+                            ++ || --
                         </div>
                     </div>
                 </div>
@@ -118,13 +106,7 @@
                 </div>
                 <div class="vote-box">
                     @* POST *@
-                    <button id="upvote">
-                        ++
-                    </button>
-                    ||
-                    <button id="downvote">
-                        --
-                    </button>
+                    ++ || --
                 </div>
                 <div>
                     Comment (@a.Comments.Count())
@@ -150,13 +132,7 @@
 
                             <div class="vote-box">
                                 @* POST *@
-                                <button id="upvote">
-                                    ++
-                                </button>
-                                ||
-                                <button id="downvote">
-                                    --
-                                </button>
+                                ++ || --
                             </div>
                         </div>
                     </div>
@@ -165,3 +141,6 @@
         }
     </div>
 </body>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script> 
