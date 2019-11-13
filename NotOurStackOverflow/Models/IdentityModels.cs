@@ -34,6 +34,10 @@ namespace NotOurStackOverflow.Models
     }
     public abstract class Post
     {
+        public Post()
+        {
+            Votes = new HashSet<Vote>();
+        }
         public int Id { get; set; }
         public virtual ApplicationUser User { get; set; }
         [ForeignKey("User")]
