@@ -226,6 +226,14 @@ namespace NotOurStackOverflow.Migrations
                 context.Comments.AddOrUpdate(comment3);
                 context.Comments.AddOrUpdate(comment4);
                 context.Comments.AddOrUpdate(comment5);
+
+                context.SaveChanges();
+
+                Question1.Comments.Add(comment1);
+                Question2.Comments.Add(comment2);
+                Question3.Comments.Add(comment3);
+                Question4.Comments.Add(comment4);
+                Question5.Comments.Add(comment5);
             }
         }
     }
