@@ -33,7 +33,7 @@ namespace NotOurStackOverflow.Controllers
         }
 
         // add a GET to alter the ordering
-        public ActionResult LandingPage()
+        public ActionResult LandingPage(int? page, string sort)
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             List<Question> usersQuestions = new List<Question>();
@@ -48,12 +48,29 @@ namespace NotOurStackOverflow.Controllers
             {
                 allQuestions = businessLogic.AllQuestions();
             }
+            int viewPage = page == null ? 1 : (int)page;
+            string Sort = sort == null ? "new" : sort;
+            if(Sort == "Popular")
+            {
+                allQuestions = allQuestions.OrderByDescending(q => q.Answers.Count + q.Comments.Count).ToList();
+            } else if(Sort == "OfDay")
+            {
+                var today = DateTime.Today;
 
+                allQuestions = allQuestions.OrderByDescending(
+                    q => q.Answers.Where(a => a.DatePosted.Value.Date == today).ToList().Count +
+                    q.Comments.Where(c => c.DatePosted.Value.Date == today).ToList().Count).ToList();
+            } else
+            {
+                allQuestions = allQuestions.OrderByDescending(q => q.DatePosted.Value).ToList();
+            }
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllQuestions = allQuestions,
+                AllQuestions = allQuestions.Skip((viewPage-1)*10).Take(10).ToList(),
                 CurrentUserQuestions = usersQuestions,
+                Page = viewPage,
+                sortMethod = Sort,
             };
             return View(viewModel);
         }
