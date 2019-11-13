@@ -9,6 +9,7 @@ namespace NotOurStackOverflow.Models.Helpers
     {
         ICollection<Question> GetAllQuestions();
         ICollection<Question> GetAllUserQuestions(string Id);
+        ICollection<Question> GetQuestionsThatArentUsers(string Id);
         ICollection<Comment> GetAllComments();
         ICollection<Comment> GetAllUserComments(string Id);
         ICollection<Answer> GetAllAnswers();
@@ -28,10 +29,13 @@ namespace NotOurStackOverflow.Models.Helpers
         {
             return dbContext.Questions.ToList();
         }
-
         public ICollection<Question> GetAllUserQuestions(string Id)
         {
             return dbContext.Questions.Where(q => q.UserId == Id).ToList();
+        }
+        public ICollection<Question> GetQuestionsThatArentUsers(string Id)
+        {
+            return dbContext.Questions.Where(q => q.UserId != Id).ToList();
         }
         public ICollection<Comment> GetAllComments()
         {

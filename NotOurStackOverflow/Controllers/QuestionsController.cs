@@ -37,13 +37,17 @@ namespace NotOurStackOverflow.Controllers
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             List<Question> usersQuestions = new List<Question>();
+            List<Question> allQuestions = new List<Question>();
                 
             if (user != null)
             {
                 usersQuestions = businessLogic.AllUserQuestions(user.Id);
+                allQuestions = businessLogic.GetQuestionsThatArentUsers(user.Id);
             }
-
-            var allQuestions = businessLogic.AllQuestions();
+            else
+            {
+                allQuestions = businessLogic.AllQuestions();
+            }
 
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
