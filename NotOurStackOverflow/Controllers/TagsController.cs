@@ -7,13 +7,23 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.Helpers;
+using NotOurStackOverflow.Models.ViewModels;
 
 namespace NotOurStackOverflow.Controllers
 {
     public class TagsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+        private DBDataAccess dataAccess;
+        private BusinessLogic businessLogic;
 
+        public TagsController()
+        {
+            db = new ApplicationDbContext();
+            dataAccess = new DBDataAccess(db);
+            businessLogic = new BusinessLogic(dataAccess);
+        }
         // GET: Tags
         public ActionResult Index()
         {
@@ -122,6 +132,18 @@ namespace NotOurStackOverflow.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult TagsQuestions(int Id)
+        {
+            var QuestionList = db.Questions.Where(x => x.Tags.Any(i => i.Id == Id)).ToList();
+
+            TagQuestionsViewModel tagQuestionsViewModel = new TagQuestionsViewModel
+            {
+                AllQuestions = QuestionList
+            };
+
+            return View(tagQuestionsViewModel);
         }
     }
 }
