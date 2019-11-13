@@ -33,7 +33,7 @@ namespace NotOurStackOverflow.Controllers
         }
 
         // add a GET to alter the ordering
-        public ActionResult LandingPage()
+        public ActionResult LandingPage(int? page)
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             List<Question> usersQuestions = new List<Question>();
@@ -48,11 +48,11 @@ namespace NotOurStackOverflow.Controllers
             {
                 allQuestions = businessLogic.AllQuestions();
             }
-
+            int Page = page == null ? 1 : (int)page;
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllQuestions = allQuestions,
+                AllQuestions = allQuestions.Skip((Page-1)*10).Take(10).ToList(),
                 CurrentUserQuestions = usersQuestions,
             };
             return View(viewModel);
