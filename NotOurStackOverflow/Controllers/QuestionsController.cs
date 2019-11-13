@@ -175,5 +175,32 @@ namespace NotOurStackOverflow.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult ACCreate(int qId)
+        {
+
+            ViewBag.Question = businessLogic.GetQuestion(qId);
+
+            return View();
+        }
+
+        // POST: Answers/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ACCreate([Bind(Include = "Id,Body")] Answer answer)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Posts.Add(answer);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", answer.UserId);
+            ViewBag.QuestionId = new SelectList(db.Posts, "Id", "UserId", answer.QuestionId);
+            return View(answer);
+        }
     }
 }

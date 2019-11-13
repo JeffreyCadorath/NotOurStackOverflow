@@ -6,13 +6,24 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.Helpers;
 
 namespace NotOurStackOverflow.Controllers
 {
     public class AnswersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+        private DBDataAccess dataAccess;
+        private BusinessLogic businessLogic;
+
+        public AnswersController()
+        {
+            db = new ApplicationDbContext();
+            dataAccess = new DBDataAccess(db);
+            businessLogic = new BusinessLogic(dataAccess);
+        }
 
         // GET: Answers
         public ActionResult Index()
@@ -37,10 +48,10 @@ namespace NotOurStackOverflow.Controllers
         }
 
         // GET: Answers/Create
-        public ActionResult Create()
+        public ActionResult Create(int qId)
         {
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.QuestionId = new SelectList(db.Posts, "Id", "UserId");
+            
+
             return View();
         }
 
@@ -49,8 +60,11 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserId,DatePosted,Body,QuestionId")] Answer answer)
+        public ActionResult Create(int qId, [Bind(Include = "Id,Body")] Answer answer)
         {
+            answer.DatePosted = DateTime.Now;
+            answer.UserId = User.Identity.GetUserId();
+            answer.QuestionId = qId;
             if (ModelState.IsValid)
             {
                 db.Posts.Add(answer);
@@ -58,8 +72,7 @@ namespace NotOurStackOverflow.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", answer.UserId);
-            ViewBag.QuestionId = new SelectList(db.Posts, "Id", "UserId", answer.QuestionId);
+            ViewBag.Question = businessLogic.GetQuestion(qId);
             return View(answer);
         }
 

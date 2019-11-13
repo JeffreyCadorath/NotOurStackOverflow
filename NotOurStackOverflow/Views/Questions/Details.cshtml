@@ -77,11 +77,11 @@
                         <div class="vote-box">
                             @* POST *@
                             <button id="upvote">
-                                ++(@c.Votes.Where(v => v.IsUpVote).Count())
+                                ++()
                             </button>
                             ||
                             <button id="downvote">
-                                --(@c.Votes.Where(v => !v.IsUpVote).Count())
+                                --()
                             </button>
                         </div>
                     </div>

@@ -6,13 +6,24 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.Helpers;
 
 namespace NotOurStackOverflow.Controllers
 {
     public class CommentsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+        private DBDataAccess dataAccess;
+        private BusinessLogic businessLogic;
+
+        public CommentsController()
+        {
+            db = new ApplicationDbContext();
+            dataAccess = new DBDataAccess(db);
+            businessLogic = new BusinessLogic(dataAccess);
+        }
 
         // GET: Comments
         public ActionResult Index()
@@ -37,10 +48,10 @@ namespace NotOurStackOverflow.Controllers
         }
 
         // GET: Comments/Create
-        public ActionResult Create()
+        public ActionResult Create(int qId)
         {
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.PostId = new SelectList(db.Posts, "Id", "UserId");
+            ViewBag.Post = businessLogic.GetQuestion(qId);
+
             return View();
         }
 
@@ -49,8 +60,11 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserId,DatePosted,Body,PostId")] Comment comment)
+        public ActionResult Create(int qId, [Bind(Include = "Id,Body")] Comment comment)
         {
+            comment.DatePosted = DateTime.Now;
+            comment.UserId = User.Identity.GetUserId();
+            comment.PostId = qId;
             if (ModelState.IsValid)
             {
                 db.Posts.Add(comment);
@@ -58,8 +72,7 @@ namespace NotOurStackOverflow.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", comment.UserId);
-            ViewBag.PostId = new SelectList(db.Posts, "Id", "UserId", comment.PostId);
+            ViewBag.Question = businessLogic.GetQuestion(qId);
             return View(comment);
         }
 

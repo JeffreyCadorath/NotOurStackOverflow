@@ -14,7 +14,7 @@ namespace NotOurStackOverflow.Models.Helpers
         ICollection<Comment> GetAllUserComments(string Id);
         ICollection<Answer> GetAllAnswers();
         ICollection<Answer> GetAllUserAnswers(string Id);
-
+        Question GetQuestion(int Id);
     }
 
     public class DBDataAccess : IDataAccess
@@ -54,6 +54,11 @@ namespace NotOurStackOverflow.Models.Helpers
         public ICollection<Answer> GetAllUserAnswers(string Id)
         {
             return dbContext.Answers.Where(a => a.UserId == Id).ToList();
+        }
+
+        public Question GetQuestion(int Id)
+        {
+            return dbContext.Questions.Find(Id);
         }
     }
 }
