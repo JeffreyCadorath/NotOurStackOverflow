@@ -114,11 +114,11 @@ else
                     }
                 </div>
                 <div>
-                    Answer (@r.Answers.Count())
+                    @Html.ActionLink("Answer", "Create", "Answers",new {qId=r.Id }, null) (@r.Answers.Count())
                     @* Action link to answer *@
                 </div>
                 <div>
-                    Comment (@r.Comments.Count())
+                    @Html.ActionLink("Comment", "Create", "Comments", new { qId = r.Id }, null) (@r.Comments.Count())
                     @* Action link to Comment *@
                 </div>
             </div>

@@ -154,7 +154,7 @@
                     }
                 </div>
                 <div>
-                    Comment (@a.Comments.Count())
+                    @Html.ActionLink("Comment", "Create", "Comments", new { qId = a.Id }, null) (@a.Comments.Count())
                     @* Action link to Comment *@
                 </div>
             </div>

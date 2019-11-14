@@ -30,5 +30,15 @@ namespace NotOurStackOverflow.Models.Helpers
             var allQuestions = dataAccess.GetAllQuestions().ToList();
             return allQuestions;
         }
+
+        public Question GetQuestion(int Id)
+        {
+            return dataAccess.GetQuestion(Id);
+        }
+
+        public Post GetPost(int Id)
+        {
+            return dataAccess.GetPost(Id);
+        }
     }
 }
