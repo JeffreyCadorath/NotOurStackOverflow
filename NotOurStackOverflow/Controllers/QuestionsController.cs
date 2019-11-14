@@ -114,6 +114,9 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
+
             return RedirectToAction("LandingPage");
         }
 
@@ -133,7 +136,7 @@ namespace NotOurStackOverflow.Controllers
         }
         
         [HttpPost]
-        public ActionResult Details(int? id, int postId, bool isPositive    )
+        public ActionResult Details(int? id, int postId, bool isPositive)
         {
             // create a vote the the accepted parameters
             if (!User.Identity.IsAuthenticated)
@@ -171,7 +174,10 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
-            return View("Details", currentQuestion);
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
+
+            return RedirectToAction("Details", currentQuestion);
         }
 
         // GET: Questions/Create

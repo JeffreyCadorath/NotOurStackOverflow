@@ -14,12 +14,18 @@ namespace NotOurStackOverflow.Models.Helpers
         ICollection<Comment> GetAllUserComments(string Id);
         ICollection<Answer> GetAllAnswers();
         ICollection<Answer> GetAllUserAnswers(string Id);
+        ApplicationUser GetUser(string id);
 
     }
 
     public class DBDataAccess : IDataAccess
     {
         ApplicationDbContext dbContext;
+
+        public ApplicationUser GetUser(string id)
+        {
+            return dbContext.Users.Find(id);
+        }
         public DBDataAccess(ApplicationDbContext db)
         {
             dbContext = db;   
