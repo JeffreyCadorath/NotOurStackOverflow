@@ -135,7 +135,7 @@ namespace NotOurStackOverflow.Controllers
         }
         
         [HttpPost]
-        public ActionResult Details(int? id, int postId, bool isPositive    )
+        public ActionResult Details(int? id, int postId, bool isPositive)
         {
             // create a vote the the accepted parameters
             if (!User.Identity.IsAuthenticated)
@@ -176,7 +176,7 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
-            return View("Details", currentQuestion);
+            return RedirectToAction("Details", currentQuestion);
         }
 
         // GET: Questions/Create
