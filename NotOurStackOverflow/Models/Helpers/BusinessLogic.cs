@@ -16,16 +16,19 @@ namespace NotOurStackOverflow.Models.Helpers
 
         public List<Question> AllUserQuestions(string Id)
         {
-            return dataAccess.GetAllUserQuestions(Id).ToList();
+            var questions = dataAccess.GetAllUserQuestions(Id).ToList();
+            return questions;
         }
 
         public List<Question> GetQuestionsThatArentUsers(string Id)
         {
-            return dataAccess.GetQuestionsThatArentUsers(Id).ToList();
+            var questions = dataAccess.GetQuestionsThatArentUsers(Id).ToList();
+            return questions;
         }
         public List<Question> AllQuestions()
         {
-            return dataAccess.GetAllQuestions().ToList();
+            var allQuestions = dataAccess.GetAllQuestions().ToList();
+            return allQuestions;
         }
     }
 }

@@ -27,33 +27,33 @@ namespace NotOurStackOverflow.Models.Helpers
 
         public ICollection<Question> GetAllQuestions()
         {
-            return dbContext.Questions.ToList();
+            return dbContext.Questions.Include("Votes").ToList();
         }
         public ICollection<Question> GetAllUserQuestions(string Id)
         {
-            return dbContext.Questions.Where(q => q.UserId == Id).ToList();
+            return dbContext.Questions.Include("Votes").Where(q => q.UserId == Id).ToList();
         }
         public ICollection<Question> GetQuestionsThatArentUsers(string Id)
         {
-            return dbContext.Questions.Where(q => q.UserId != Id).ToList();
+            return dbContext.Questions.Include("Votes").Where(q => q.UserId != Id).ToList();
         }
         public ICollection<Comment> GetAllComments()
         {
-            return dbContext.Comments.ToList();
+            return dbContext.Comments.Include("Votes").ToList();
         }
 
         public ICollection<Comment> GetAllUserComments(string Id)
         {
-            return dbContext.Comments.Where(c => c.UserId == Id).ToList();
+            return dbContext.Comments.Include("Votes").Where(c => c.UserId == Id).ToList();
         }
         public ICollection<Answer> GetAllAnswers()
         {
-            return dbContext.Answers.ToList();
+            return dbContext.Answers.Include("Votes").ToList();
         }
 
         public ICollection<Answer> GetAllUserAnswers(string Id)
         {
-            return dbContext.Answers.Where(a => a.UserId == Id).ToList();
+            return dbContext.Answers.Include("Votes").Where(a => a.UserId == Id).ToList();
         }
     }
 }
