@@ -17,7 +17,7 @@ namespace NotOurStackOverflow.Controllers
         private ApplicationDbContext db;
         private DBDataAccess dataAccess;
         private BusinessLogic businessLogic;
-        
+
         public QuestionsController()
         {
             db = new ApplicationDbContext();
@@ -38,7 +38,7 @@ namespace NotOurStackOverflow.Controllers
             var user = db.Users.Find(User.Identity.GetUserId());
             List<Question> usersQuestions = new List<Question>();
             List<Question> allQuestions = new List<Question>();
-                
+
             if (user != null)
             {
                 usersQuestions = businessLogic.AllUserQuestions(user.Id);
@@ -50,18 +50,18 @@ namespace NotOurStackOverflow.Controllers
             }
             int viewPage = page == null ? 1 : (int)page;
             string Sort = sort == null ? "new" : sort;
-            if(Sort == "Popular")
+            if (Sort == "Popular")
             {
                 allQuestions = allQuestions.OrderByDescending(q => q.Answers.Count + q.Comments.Count).ToList();
-            } 
-            else if(Sort == "OfDay")
+            }
+            else if (Sort == "OfDay")
             {
                 var today = DateTime.Today;
 
                 allQuestions = allQuestions.OrderByDescending(
                     q => q.Answers.Where(a => a.DatePosted.Value.Date == today).ToList().Count +
                     q.Comments.Where(c => c.DatePosted.Value.Date == today).ToList().Count).ToList();
-            } 
+            }
             else
             {
                 allQuestions = allQuestions.OrderByDescending(q => q.DatePosted.Value).ToList();
@@ -70,7 +70,7 @@ namespace NotOurStackOverflow.Controllers
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
-                AllQuestions = allQuestions.Skip((viewPage-1)*10).Take(10).ToList(),
+                AllQuestions = allQuestions.Skip((viewPage - 1) * 10).Take(10).ToList(),
                 CurrentUserQuestions = usersQuestions,
                 Page = viewPage,
                 sortMethod = Sort,
@@ -86,7 +86,7 @@ namespace NotOurStackOverflow.Controllers
                 return RedirectToAction("Register", "Account");
             }
 
-            Post post = db.Posts.Find(postId);
+            Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
             ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
             ApplicationUser votedUser = db.Users.Find(post.UserId);
 
@@ -94,7 +94,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 return HttpNotFound();
             }
-
+            
             Vote newVote = new Vote
             {
                 IsUpVote = isPositive,
@@ -106,6 +106,7 @@ namespace NotOurStackOverflow.Controllers
                 PostUserId = votedUser.Id,
             };
 
+            var negatingVote = post.Votes.Where(v => v.VotingUserId == votingUser.Id && v.IsUpVote != newVote.IsUpVote).First();
             db.Votes.Add(newVote);
             db.SaveChanges();
 
@@ -116,6 +117,12 @@ namespace NotOurStackOverflow.Controllers
 
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
+
+            if (negatingVote != null)
+            {
+                db.Votes.Remove(negatingVote);
+                db.SaveChanges();
+            }
 
             return RedirectToAction("LandingPage");
         }
@@ -134,7 +141,7 @@ namespace NotOurStackOverflow.Controllers
             }
             return View(question);
         }
-        
+
         [HttpPost]
         public ActionResult Details(int? id, int postId, bool isPositive)
         {
@@ -177,6 +184,7 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
+
             return RedirectToAction("Details", currentQuestion);
         }
 
@@ -189,7 +197,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 return RedirectToAction("Register", "Account");
             }
-            
+
             ViewBag.TagId = new MultiSelectList(db.Tags, "Id", "Title");
             return View();
         }
@@ -207,7 +215,7 @@ namespace NotOurStackOverflow.Controllers
                 Tags = new List<Tag>(),
                 Title = Title,
             };
-            foreach(var tagId in TagId)
+            foreach (var tagId in TagId)
             {
                 question.Tags.Add(db.Tags.Find(tagId));
             }

@@ -1,10 +1,11 @@
-﻿@model NotOurStackOverflow.Models.ViewModels.LandingPageViewModel
+﻿@using Microsoft.AspNet.Identity
+@model NotOurStackOverflow.Models.ViewModels.LandingPageViewModel
 
 @{
     ViewBag.Title = "LandingPage";
 }
 
-@if (Model.CurrentUser != null)
+@if (User.Identity.IsAuthenticated && Model.CurrentUser != null)
 {
     <h3>Welcome Home, @Model.CurrentUser.UserName. We've missed you.</h3>
 }
@@ -33,27 +34,16 @@ else
                         }
                     </div>
                     <div class="vote-box">
-                        @using (Html.BeginForm(FormMethod.Post))
-                        {
-                            @Html.Hidden("isPositive", true)
-                            @Html.Hidden("postId", q.Id)
-                            <input type="submit" value="++" />
-                        }
+                        ++ (@q.Votes.Where(x => x.IsUpVote).Count())
                         ||
-
-                        @using (Html.BeginForm(FormMethod.Post))
-                        {
-                            @Html.Hidden("isPositive", false)
-                            @Html.Hidden("postId", q.Id)
-                            <input type="submit" value="--" />
-                        }
+                        -- (@q.Votes.Where(x => !x.IsUpVote).Count())
                     </div>
                     <div>
-                        Answer (@q.Answers.Count())
+                        Answers (@q.Answers.Count())
                         @* Action link to answer *@
                     </div>
                     <div>
-                        Comment (@q.Comments.Count())
+                        Comments (@q.Comments.Count())
                         @* Action link to Comment *@
                     </div>
                 </div>
@@ -96,30 +86,42 @@ else
                 </div>
 
                 <div class="vote-box">
-                    @using (Html.BeginForm(FormMethod.Post))
+                    @if (!r.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                     {
-                        @Html.Hidden("isPositive", true)
-                        @Html.Hidden("postId", r.Id)
-                        <input type="submit" value="++" />
+                        using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("isPositive", true)
+                            @Html.Hidden("postId", r.Id)
+                            <input type="submit" value="++" />
+                            <span>@r.Votes.Where(x => x.IsUpVote).Count()</span>
+                        }
+                    }
+                    else
+                    {
                         <span>@r.Votes.Where(x => x.IsUpVote).Count()</span>
                     }
                     ||
-
-                    @using (Html.BeginForm(FormMethod.Post))
+                    @if (!r.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                     {
-                        @Html.Hidden("isPositive", false)
-                        @Html.Hidden("postId", r.Id)
-                        <input type="submit" value="--" />
+                        using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("isPositive", false)
+                            @Html.Hidden("postId", r.Id)
+                            <input type="submit" value="--" />
+                            <span>@r.Votes.Where(x => !x.IsUpVote).Count()</span>
+                        }
+                    }
+                    else
+                    {
                         <span>@r.Votes.Where(x => !x.IsUpVote).Count()</span>
                     }
+
                 </div>
                 <div>
-                    Answer (@r.Answers.Count())
-                    @* Action link to answer *@
+                    Answers (@r.Answers.Count())
                 </div>
                 <div>
-                    Comment (@r.Comments.Count())
-                    @* Action link to Comment *@
+                    Comments (@r.Comments.Count())
                 </div>
             </div>
         </div>
