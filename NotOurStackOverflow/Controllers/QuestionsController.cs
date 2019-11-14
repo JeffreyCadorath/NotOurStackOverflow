@@ -113,6 +113,9 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
+
             return RedirectToAction("LandingPage");
         }
 
@@ -168,6 +171,9 @@ namespace NotOurStackOverflow.Controllers
             post.Votes.Add(newVote);
             votingUser.VoteMade.Add(newVote);
             votedUser.VoteRecieved.Add(newVote);
+            db.SaveChanges();
+
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
             return View("Details", currentQuestion);

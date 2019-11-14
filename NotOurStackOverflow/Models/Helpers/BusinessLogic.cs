@@ -30,5 +30,15 @@ namespace NotOurStackOverflow.Models.Helpers
             var allQuestions = dataAccess.GetAllQuestions().ToList();
             return allQuestions;
         }
+
+        public int TabulateReputation(string id)
+        {
+            ApplicationUser user = dataAccess.GetUser(id);
+
+            int positives = user.VoteRecieved.Where(v => v.IsUpVote).Count();
+            int negatives = user.VoteRecieved.Where(v => !v.IsUpVote).Count();
+
+            return (positives * 5) - (negatives * 5);
+        }
     }
 }
