@@ -65,9 +65,9 @@ else
 <hr />
 
 <div class="button-box">
-    <button>Newest</button>
-    <button>Most Popular</button>
-    <button>Qs and As of the Day</button>
+    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="New" })'; return false;">Newest</button>
+    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="Popular" })'; return false;">Most Popular</button>
+    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="OfDay" })'; return false;">Qs and As of the Day</button>
 </div>
 
 <body class="card-box">
@@ -126,8 +126,14 @@ else
     }
 </body>
 <div class="page-box">
-    <button id="next-ten"><<</button>
-    <button id="prev-ten">>></button>
+    @if (Model.Page > 1)
+    {
+        <button id="prev-ten" onclick="location.href='@Url.Action("LandingPage", "Questions", new {Page = Model.Page -1, sort=Model.sortMethod })';return false;"><<</button>
+    }
+    @if ((Model.Page + 1) < Math.Ceiling((decimal)(ViewBag.AllQNum / 10)))
+    {
+        <button id="next-ten" onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page +1, sort=Model.sortMethod })'; return false;">>></button>
+    }
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>

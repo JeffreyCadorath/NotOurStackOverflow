@@ -66,6 +66,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 allQuestions = allQuestions.OrderByDescending(q => q.DatePosted.Value).ToList();
             }
+            ViewBag.AllQNum = allQuestions.Count;
             LandingPageViewModel viewModel = new LandingPageViewModel
             {
                 CurrentUser = user,
