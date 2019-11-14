@@ -101,6 +101,7 @@ else
                         @Html.Hidden("isPositive", true)
                         @Html.Hidden("postId", r.Id)
                         <input type="submit" value="++" />
+                        <span>@r.Votes.Where(x => x.IsUpVote).Count()</span>
                     }
                     ||
 
@@ -109,6 +110,7 @@ else
                         @Html.Hidden("isPositive", false)
                         @Html.Hidden("postId", r.Id)
                         <input type="submit" value="--" />
+                        <span>@r.Votes.Where(x => !x.IsUpVote).Count()</span>
                     }
                 </div>
                 <div>
