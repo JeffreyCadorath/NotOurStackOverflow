@@ -76,7 +76,6 @@
                 <div class="comment-card">
                     <div class="user-card">
                         @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
-                        <img src="@c.User.GetBadgeUrl()"/>  
                         | @c.User.Reputation
                     </div>
                     <p class="comment-body">
@@ -127,7 +126,6 @@
             <div class="answer-card">
                 <div class="user-card">
                     @Html.ActionLink(a.User.UserName, "Details", new { id = Model.User.Id }) |
-                    <img src="@c.User.GetBadgeUrl()" />
                     | @a.User.Reputation
                 </div>
                 <p>
