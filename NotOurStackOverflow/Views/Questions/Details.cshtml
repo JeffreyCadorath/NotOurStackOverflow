@@ -70,6 +70,7 @@
     {
         <div class="comment-box">
             <h4>Comments</h4>
+            <p>@Html.ActionLink("Add a Comment", "Create", "Comments", new { qId = Model.Id }, null)</p>
             @foreach (var c in Model.Comments)
             {
                 <div class="comment-card">
@@ -111,6 +112,7 @@
 
     <div class="answer-box">
         <h4>Answers</h4>
+        <p>@Html.ActionLink("Add an Answer", "Create", "Answers", new { qId = Model.Id }, null)</p>
         @if (!Model.Answers.Any())
         {
             <div>
