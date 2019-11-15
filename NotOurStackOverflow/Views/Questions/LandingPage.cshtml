@@ -16,7 +16,7 @@ else
 @if (Model.CurrentUserQuestions.Any())
 {
     <div>Have a look at how your current questions are doing:</div>
-    <div class="card-deck">
+    <div>
         @foreach (var q in Model.CurrentUserQuestions)
         {
             <div class="card">
@@ -71,10 +71,10 @@ else
     <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="OfDay" })'; return false;">Qs and As of the Day</button>
 </div>
 
-<body class="card-deck">
+<div>
     @foreach (var r in Model.AllQuestions)
     {
-        <div class="card">
+        <div class="card w-auto">
             <div class="card-header">
                 @* link to user profile *@
                 <span>@r.User.UserName | @r.User.Reputation</span>
@@ -86,8 +86,7 @@ else
                     @Html.ActionLink(r.Title, "Details", "Questions", new { Id = r.Id }, new { @class = "question-title-link" })
                 </h5>
             </div>
-            <div class="card-footer">
-
+            <div class="card-footer text-muted container">
                 <div class="tag-box">
                     @foreach (var t in r.Tags)
                     {
@@ -127,7 +126,8 @@ else
             </div>
         </div>
     }
-</body>
+</div>
+
 <div class="page-box">
     @if (Model.Page > 1)
     {
