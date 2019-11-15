@@ -18,11 +18,12 @@ else
     <div class="card-box">
         @foreach (var q in Model.CurrentUserQuestions)
         {
-            <div class="question-card">
-                <h4>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">
                     @Html.ActionLink(q.Title, "Details", "Questions", new { Id = q.Id }, new { @class = "question-title-link" })
-                </h4>
-                <div class="info-container">
+                </h5>
+                <div class="card-footer text-muted">
                     <div class="tag-box">
                         @foreach (var t in q.Tags)
                         {
@@ -58,7 +59,9 @@ else
                     </div>
                 </div>
             </div>
+                </div>
         }
+
     </div>
 }
 
