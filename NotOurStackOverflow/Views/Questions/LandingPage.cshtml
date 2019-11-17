@@ -15,7 +15,7 @@ else
 
 @if (Model.CurrentUserQuestions.Any())
 {
-    <div>Have a look at how your current questions are doing:</div>
+    <div style="margin-bottom:10px">Have a look at how your current questions are doing:</div>
     <div>
         @foreach (var q in Model.CurrentUserQuestions)
         {
@@ -38,7 +38,7 @@ else
                                 </div>
                             }
                         </div>
-                        <div class="col-sm row align-items-md-center justify-content-end">
+                        <div class="col-sm row align-items-sm-end justify-content-sm-end">
                             <div class="col-3">
                                 @using (Html.BeginForm(FormMethod.Post))
                                 {
@@ -74,12 +74,12 @@ else
 <div>
     @foreach (var r in Model.AllQuestions)
     {
-        <div class="card w-auto">
+        <div class="card w-auto margin-bottom" style="margin-bottom:10px; margin-top:10px">
             <div class="card-header">
-                @* link to user profile *@
-                <span>@r.User.UserName | @r.User.Reputation</span>
-                <span>@r.DatePosted</span>
-
+                <div class="row">
+                    <div class="col">@r.User.UserName | @r.User.Reputation</div>
+                    <div class="col text-right">@r.DatePosted</div>
+                </div>
             </div>
             <div class="card-body">
                 <h5 class="card-title">
@@ -87,42 +87,42 @@ else
                 </h5>
             </div>
             <div class="card-footer text-muted container">
-                <div class="tag-box">
-                    @foreach (var t in r.Tags)
-                    {
-                        <div class="tag">
-                            @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, null)
-                            @* Link to tag with list of questions *@
+                <div class="row">
+                    <div class="col-sm">
+                        @foreach (var t in r.Tags)
+                        {
+                            <div class="badge badge-pill badge-secondary">
+                                @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, new { @style = "color:white;" })
+                                @* Link to tag with list of questions *@
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-sm row align-items-sm-end justify-content-sm-end">
+                        <div class="col-3">
+                            @using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("isPositive", true)
+                                @Html.Hidden("postId", r.Id)
+                                <input type="submit" value="(@r.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                            }
                         </div>
-                    }
+                        <div class="col-3">
+                            @using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("isPositive", false)
+                                @Html.Hidden("postId", r.Id)
+                                <input type="submit" value="--  (@r.Votes.Where(x => !x.IsUpVote).Count())" />
+                                <span></span>
+                            }
+                        </div>
+                    </div>
                 </div>
-
-                <div class="vote-box">
-                    @using (Html.BeginForm(FormMethod.Post))
-                    {
-                        @Html.Hidden("isPositive", true)
-                        @Html.Hidden("postId", r.Id)
-                        <input type="submit" value="++" />
-                        <span>@r.Votes.Where(x => x.IsUpVote).Count()</span>
-                    }
-                    ||
-
-                    @using (Html.BeginForm(FormMethod.Post))
-                    {
-                        @Html.Hidden("isPositive", false)
-                        @Html.Hidden("postId", r.Id)
-                        <input type="submit" value="--" />
-                        <span>@r.Votes.Where(x => !x.IsUpVote).Count()</span>
-                    }
-                </div>
-                <div>
-                    Answer (@r.Answers.Count())
-                    @* Action link to answer *@
-                </div>
-                <div>
-                    Comment (@r.Comments.Count())
-                    @* Action link to Comment *@
-                </div>
+                <div class="row justify-content-end" style="margin-top:5px">
+                    <div>
+                        Answer (@r.Answers.Count()) || Comment (@r.Comments.Count())
+                    </div>
+                </div>  
             </div>
         </div>
     }
