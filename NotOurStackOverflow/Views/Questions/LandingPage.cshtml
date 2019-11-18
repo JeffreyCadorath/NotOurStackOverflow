@@ -113,7 +113,7 @@ else
                             }
                             else
                             {
-                                <span>(@r.Votes.Where(x => x.IsUpVote).Count())</span>
+                                <span>(@r.Votes.Where(x => x.IsUpVote).Count()  ++)</span>
                             }
 
                         </div>
@@ -130,7 +130,7 @@ else
                             }
                             else
                             {
-                                <span>(@r.Votes.Where(x => !x.IsUpVote).Count())</span>
+                                <span>(--  @r.Votes.Where(x => !x.IsUpVote).Count())</span>
                             }
 
                         </div>
