@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-sm row align-items-sm-end justify-content-end">
                     <div class="col-3">
-                        @if (!Model.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                        @if (!Model.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && Model.UserId != User.Identity.GetUserId())
                         {
                             using (Html.BeginForm(FormMethod.Post))
                             {
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="col-3">
-                        @if (!Model.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                        @if (!Model.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && Model.UserId != User.Identity.GetUserId())
                         {
                             using (Html.BeginForm(FormMethod.Post))
                             {
@@ -104,7 +104,7 @@
                 <div class="card-footer container">
                     <div class="row justify-content-end align-items-end">
                         <div class="col-2">
-                            @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
                             {
                                 using (Html.BeginForm(FormMethod.Post))
                                 {
@@ -121,7 +121,7 @@
 
                         </div>
                         <div class="col-2">
-                            @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
                             {
                                 using (Html.BeginForm(FormMethod.Post))
                                 {
@@ -179,7 +179,7 @@
                 <div class="card-footer container">
                     <div class="row justify-content-end align-items-end">
                         <div class="col-1">
-                            @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
                             {
                                 using (Html.BeginForm(FormMethod.Post))
                                 {
@@ -196,7 +196,7 @@
 
                         </div>
                         <div class="col-1">
-                            @if (!a.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            @if (!a.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
                             {
                                 using (Html.BeginForm(FormMethod.Post))
                                 {
@@ -240,7 +240,7 @@
                         <div class="card-footer container">
                             <div class="row justify-content-end align-items-end">
                                 <div class="col-2">
-                                    @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                                    @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
                                     {
                                         using (Html.BeginForm(FormMethod.Post))
                                         {
@@ -258,7 +258,7 @@
 
                                 </div>
                                 <div class="col-2">
-                                    @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                                    @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
                                     {
                                         using (Html.BeginForm(FormMethod.Post))
                                         {
