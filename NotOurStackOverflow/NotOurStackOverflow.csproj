@@ -205,6 +205,12 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\rating_0.png" />
+    <Content Include="Content\Icons\rating_1.png" />
+    <Content Include="Content\Icons\rating_2.png" />
+    <Content Include="Content\Icons\rating_3.png" />
+    <Content Include="Content\Icons\rating_4.png" />
+    <Content Include="Content\Icons\rating_5.png" />
     <Content Include="Content\MultiSelect.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

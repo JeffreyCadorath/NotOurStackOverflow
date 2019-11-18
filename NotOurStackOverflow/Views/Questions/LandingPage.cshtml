@@ -36,26 +36,24 @@ else
                             {
                                 <div class="badge badge-pill badge-secondary">
                                     @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, new { @style = "color:white;" })
+                                    @* Link to tag with list of questions *@
                                 </div>
                             }
                         </div>
+
                         <div class="col-sm row align-items-sm-end justify-content-sm-end">
                             <div class="col-3">
-                                @using (Html.BeginForm(FormMethod.Post))
-                                {
-                                    @Html.Hidden("isPositive", true)
-                                    @Html.Hidden("postId", q.Id)
-                                    <input type="submit" value="++" />
-                                }
+                                <button disabled>(@q.Votes.Where(x => x.IsUpVote).Count())  ++</button>
                             </div>
                             <div class="col-3">
-                                @using (Html.BeginForm(FormMethod.Post))
-                                {
-                                    @Html.Hidden("isPositive", false)
-                                    @Html.Hidden("postId", q.Id)
-                                    <input type="submit" value="--" />
-                                }
+                                <button disabled>--  (@q.Votes.Where(x => !x.IsUpVote).Count())</button> 
+                                    <span></span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row col-sm justify-content-end" style="margin-top:5px">
+                        <div>
+                            Answer (@q.Answers.Count()) || Comment (@q.Comments.Count())
                         </div>
                     </div>
                 </div>
@@ -113,7 +111,7 @@ else
                             }
                             else
                             {
-                                <span>(@r.Votes.Where(x => x.IsUpVote).Count())</span>
+                                <span>(@r.Votes.Where(x => x.IsUpVote).Count()  ++)</span>
                             }
 
                         </div>
@@ -130,7 +128,7 @@ else
                             }
                             else
                             {
-                                <span>(@r.Votes.Where(x => !x.IsUpVote).Count())</span>
+                                <span>(--  @r.Votes.Where(x => !x.IsUpVote).Count())</span>
                             }
 
                         </div>
@@ -138,9 +136,9 @@ else
                 </div>
                 <div class="row col-sm justify-content-end" style="margin-top:5px">
                     <div>
-                        Answer (@r.Answers.Count()) || Comment (@r.Comments.Count())
+                        @Html.ActionLink("Answer", "Create", "Answers", new { qId = r.Id }, null) (@r.Answers.Count()) || @Html.ActionLink("Comment", "Create", "Comments", new { qId = r.Id }, null) (@r.Comments.Count())
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     }

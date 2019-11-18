@@ -6,13 +6,24 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NotOurStackOverflow.Models;
+using NotOurStackOverflow.Models.Helpers;
 
 namespace NotOurStackOverflow.Controllers
 {
     public class CommentsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+        private DBDataAccess dataAccess;
+        private BusinessLogic businessLogic;
+
+        public CommentsController()
+        {
+            db = new ApplicationDbContext();
+            dataAccess = new DBDataAccess(db);
+            businessLogic = new BusinessLogic(dataAccess);
+        }
 
         // GET: Comments
         public ActionResult Index()
@@ -37,10 +48,15 @@ namespace NotOurStackOverflow.Controllers
         }
 
         // GET: Comments/Create
-        public ActionResult Create()
+        public ActionResult Create(int qId)
         {
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.PostId = new SelectList(db.Posts, "Id", "UserId");
+            var post = businessLogic.GetPost(qId);
+            if(post is Question)
+            {
+                var question = (Question)post;
+                ViewBag.PTitle = question.Title;
+            }
+            ViewBag.Post = post;
             return View();
         }
 
@@ -49,17 +65,44 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserId,DatePosted,Body,PostId")] Comment comment)
+        public ActionResult Create(int qId, [Bind(Include = "Id,Body,PostId")] Comment comment)
         {
+            comment.UserId = User.Identity.GetUserId();
+            comment.DatePosted = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Posts.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                var commentPost = businessLogic.GetPost(comment.PostId);
+                if (commentPost is Answer)
+                {
+                    Answer answer = (Answer)commentPost;
+                    answer.Comments.Add(comment);
+                }
+                else
+                {
+                    Question question = (Question)commentPost;
+                    question.Comments.Add(comment);
+                }
+                db.SaveChanges();
+                if(comment.Post is Answer)
+                {
+                    Answer answer = (Answer)comment.Post;
+
+                    return RedirectToAction("Details", "Questions", new { id = answer.QuestionId });
+                } else
+                {
+                    return RedirectToAction("Details", "Questions", new { id = comment.PostId });
+                }
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", comment.UserId);
-            ViewBag.PostId = new SelectList(db.Posts, "Id", "UserId", comment.PostId);
+            var post = businessLogic.GetPost(qId);
+            if (post is Question)
+            {
+                var question = (Question)post;
+                ViewBag.PTitle = question.Title;
+            }
+            ViewBag.Post = post;
             return View(comment);
         }
 

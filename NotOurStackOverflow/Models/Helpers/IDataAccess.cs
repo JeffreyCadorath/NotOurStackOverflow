@@ -15,7 +15,9 @@ namespace NotOurStackOverflow.Models.Helpers
         ICollection<Answer> GetAllAnswers();
         ICollection<Answer> GetAllUserAnswers(string Id);
         ApplicationUser GetUser(string id);
+        Question GetQuestion(int Id);
 
+        Post GetPost(int Id);
     }
 
     public class DBDataAccess : IDataAccess
@@ -60,6 +62,16 @@ namespace NotOurStackOverflow.Models.Helpers
         public ICollection<Answer> GetAllUserAnswers(string Id)
         {
             return dbContext.Answers.Include("Votes").Where(a => a.UserId == Id).ToList();
+        }
+
+        public Question GetQuestion(int Id)
+        {
+            return dbContext.Questions.Find(Id);
+        }
+
+        public Post GetPost(int Id)
+        {
+            return dbContext.Posts.Find(Id);
         }
     }
 }

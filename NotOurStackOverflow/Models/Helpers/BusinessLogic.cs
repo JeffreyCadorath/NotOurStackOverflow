@@ -40,5 +40,15 @@ namespace NotOurStackOverflow.Models.Helpers
 
             return (positives * 5) - (negatives * 5);
         }
+
+        public Question GetQuestion(int Id)
+        {
+            return dataAccess.GetQuestion(Id);
+        }
+
+        public Post GetPost(int Id)
+        {
+            return dataAccess.GetPost(Id);
+        }
     }
 }
