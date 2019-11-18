@@ -153,7 +153,7 @@ namespace NotOurStackOverflow.Controllers
 
             Question currentQuestion = db.Questions.Find(id);
 
-            Post post = db.Posts.Find(postId);
+            Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
             ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
             ApplicationUser votedUser = db.Users.Find(post.UserId);
 
@@ -173,6 +173,7 @@ namespace NotOurStackOverflow.Controllers
                 PostUserId = votedUser.Id,
             };
 
+            var negatingVote = post.Votes.Where(v => v.VotingUserId == votingUser.Id && v.IsUpVote != newVote.IsUpVote).FirstOrDefault();
             db.Votes.Add(newVote);
             db.SaveChanges();
 
@@ -184,6 +185,11 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
+            if (negatingVote != null)
+            {
+                db.Votes.Remove(negatingVote);
+                db.SaveChanges();
+            }
 
             return RedirectToAction("Details", currentQuestion);
         }
