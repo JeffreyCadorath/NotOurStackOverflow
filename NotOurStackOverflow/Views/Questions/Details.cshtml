@@ -1,4 +1,5 @@
 ﻿@model NotOurStackOverflow.Models.Question
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = "Details";
@@ -41,22 +42,37 @@
                 </div>
                 <div class="col-sm row align-items-sm-end justify-content-end">
                     <div class="col-3">
-                        @using (Html.BeginForm(FormMethod.Post))
+                        @if (!Model.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                         {
-                            @Html.Hidden("id", Model.Id)
-                            @Html.Hidden("isPositive", true)
-                            @Html.Hidden("postId", Model.Id)
-                            <input type="submit" value="(@Model.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                            using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("id", Model.Id)
+                                @Html.Hidden("isPositive", true)
+                                @Html.Hidden("postId", Model.Id)
+                                <input type="submit" value="(@Model.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                            }
                         }
+                        else
+                        {
+                            <span>(@Model.Votes.Where(x => x.IsUpVote).Count() ++)</span>
+                        }
+
                     </div>
 
                     <div class="col-3">
-                        @using (Html.BeginForm(FormMethod.Post))
+                        @if (!Model.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                         {
-                            @Html.Hidden("id", Model.Id)
-                            @Html.Hidden("isPositive", false)
-                            @Html.Hidden("postId", Model.Id)
-                            <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                            using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("id", Model.Id)
+                                @Html.Hidden("isPositive", false)
+                                @Html.Hidden("postId", Model.Id)
+                                <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                            }
+                        }
+                        else
+                        {
+                            <span>(-- @Model.Votes.Where(x => !x.IsUpVote).Count())</span>
                         }
                     </div>
                 </div>
@@ -88,13 +104,21 @@
                 <div class="card-footer container">
                     <div class="row justify-content-end align-items-end">
                         <div class="col-2">
-                            @using (Html.BeginForm(FormMethod.Post))
+                            @if (!Model.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                             {
-                                @Html.Hidden("id", Model.Id)
-                                @Html.Hidden("isPositive", true)
-                                @Html.Hidden("postId", c.Id)
-                                <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                using (Html.BeginForm(FormMethod.Post))
+                                {
+                                    @Html.Hidden("id", Model.Id)
+                                    @Html.Hidden("isPositive", true)
+                                    @Html.Hidden("postId", c.Id)
+                                    <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                }
                             }
+                            else
+                            {
+                                <span>(@c.Votes.Where(x => x.IsUpVote).Count()) ++</span>
+                            }
+
                         </div>
                         <div class="col-2">
                             @using (Html.BeginForm(FormMethod.Post))
@@ -102,7 +126,7 @@
                                 @Html.Hidden("id", Model.Id)
                                 @Html.Hidden("isPositive", false)
                                 @Html.Hidden("postId", c.Id)
-                                <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                                <input type="submit" value="--  (@c.Votes.Where(x => !x.IsUpVote).Count())" />
                             }
                         </div>
                         <div class="col-2">
@@ -144,81 +168,81 @@
                 <div class="card-body">
                     @a.Body
                 </div>
-            <div class="card-footer container">
-                <div class="row justify-content-end align-items-end">
-                    <div class="col-1">
-                        @using (Html.BeginForm(FormMethod.Post))
-                        {
-                            @Html.Hidden("id", Model.Id)
-                            @Html.Hidden("isPositive", true)
-                            @Html.Hidden("postId", a.Id)
-                            <input type="submit" value="(@a.Votes.Where(x => x.IsUpVote).Count())  ++" />
-                        }
+                <div class="card-footer container">
+                    <div class="row justify-content-end align-items-end">
+                        <div class="col-1">
+                            @using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("id", Model.Id)
+                                @Html.Hidden("isPositive", true)
+                                @Html.Hidden("postId", a.Id)
+                                <input type="submit" value="(@a.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                            }
                         </div>
                         <div class="col-1">
-                        @using (Html.BeginForm(FormMethod.Post))
-                        {
-                            @Html.Hidden("id", Model.Id)
-                            @Html.Hidden("isPositive", false)
-                            @Html.Hidden("postId", a.Id)
-                            <input type="submit" value="--  (@a.Votes.Where(x => !x.IsUpVote).Count())" />
-                        }
-                    </div>
+                            @using (Html.BeginForm(FormMethod.Post))
+                            {
+                                @Html.Hidden("id", Model.Id)
+                                @Html.Hidden("isPositive", false)
+                                @Html.Hidden("postId", a.Id)
+                                <input type="submit" value="--  (@a.Votes.Where(x => !x.IsUpVote).Count())" />
+                            }
+                        </div>
                         <div class="col-2">
                             <button>
                                 Reply
                             </button>
                             @*action link for adding on comment*@
                         </div>
+                    </div>
                 </div>
             </div>
-                </div>
 
             <div class="comment-box">
                 @foreach (var c in a.Comments)
                 {
-                <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
-                    <div class="row card-header-pills">
-                        <div class="col">
-                            @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
-                            | @c.User.Reputation
-                        </div>
-                        <div class="col text-right">
-                            @c.DatePosted
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @c.Body
-                    </div>
-                    <div class="card-footer container">
-                        <div class="row justify-content-end align-items-end">
-                            <div class="col-2">
-                                @using (Html.BeginForm(FormMethod.Post))
-                                {
-                                    @Html.Hidden("id", Model.Id)
-                                    @Html.Hidden("isPositive", true)
-                                    @Html.Hidden("postId", c.Id)
-                                    <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
-                                }
+                    <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
+                        <div class="row card-header-pills">
+                            <div class="col">
+                                @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                                | @c.User.Reputation
                             </div>
-                            <div class="col-2">
-                                @using (Html.BeginForm(FormMethod.Post))
-                                {
-                                    @Html.Hidden("id", Model.Id)
-                                    @Html.Hidden("isPositive", false)
-                                    @Html.Hidden("postId", c.Id)
-                                    <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
-                                }
-                            </div>
-                            <div class="col-2">
-                                <button>
-                                    Reply
-                                </button>
-                                @*action link for adding on comment*@
+                            <div class="col text-right">
+                                @c.DatePosted
                             </div>
                         </div>
+                        <div class="card-body">
+                            @c.Body
+                        </div>
+                        <div class="card-footer container">
+                            <div class="row justify-content-end align-items-end">
+                                <div class="col-2">
+                                    @using (Html.BeginForm(FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", true)
+                                        @Html.Hidden("postId", c.Id)
+                                        <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    }
+                                </div>
+                                <div class="col-2">
+                                    @using (Html.BeginForm(FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", false)
+                                        @Html.Hidden("postId", c.Id)
+                                        <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    }
+                                </div>
+                                <div class="col-2">
+                                    <button>
+                                        Reply
+                                    </button>
+                                    @*action link for adding on comment*@
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
                 }
             </div>

@@ -70,7 +70,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
+            Comment comment = db.Comments.Include(x => x.Votes).FirstOrDefault(p => p.Id == id);
             if (comment == null)
             {
                 return HttpNotFound();

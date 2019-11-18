@@ -134,7 +134,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
+            Question question = db.Questions.Include(x => x.Votes).FirstOrDefault(p => p.Id == id);
             if (question == null)
             {
                 return HttpNotFound();
@@ -151,7 +151,7 @@ namespace NotOurStackOverflow.Controllers
                 return RedirectToAction("Register", "Account");
             }
 
-            Question currentQuestion = db.Questions.Find(id);
+            Question currentQuestion = db.Questions.Include(x => x.Votes).FirstOrDefault(x => x.Id == id);
 
             Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
             ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
