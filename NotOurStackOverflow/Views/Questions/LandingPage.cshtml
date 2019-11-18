@@ -118,7 +118,7 @@ else
                 </div>
                 <div class="row col-sm justify-content-end" style="margin-top:5px">
                     <div>
-                        Answer (@r.Answers.Count()) || Comment (@r.Comments.Count())
+                        @Html.ActionLink("Answer", "Create", "Answers", new { qId = r.Id }, null) (@r.Answers.Count()) || @Html.ActionLink("Comment", "Create", "Comments", new { qId = r.Id }, null) (@r.Comments.Count())
                     </div>
                 </div>
             </div>
