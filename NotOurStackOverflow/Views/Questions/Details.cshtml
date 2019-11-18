@@ -138,9 +138,6 @@
 
                         </div>
                         <div class="col-2">
-                            <button>
-                                Reply
-                            </button>
                             @*action link for adding on comment*@
                         </div>
                     </div>
@@ -212,7 +209,7 @@
                             }
                         </div>
                         <div class="col-2">
-                            <button>
+                            <button onclick="location.href = '@Url.Action("Create", "Comments", new { qId = a.Id })'; return false;">
                                 Reply
                             </button>
                             @*action link for adding on comment*@
@@ -274,9 +271,6 @@
                                     }
                                 </div>
                                 <div class="col-2">
-                                    <button>
-                                        Reply
-                                    </button>
                                     @*action link for adding on comment*@
                                 </div>
                             </div>
