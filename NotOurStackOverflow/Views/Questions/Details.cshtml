@@ -70,6 +70,7 @@
 
     @if (Model.Comments.Any())
     {
+        <p>@Html.ActionLink("Add a Comment", "Create", "Comments", new { qId = Model.Id }, null)</p>
         foreach (var c in Model.Comments)
         {
             <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
@@ -119,6 +120,7 @@
 
     <div class="answer-box">
         <h4>Answers</h4>
+        <p>@Html.ActionLink("Answer", "Create", "Answers", new { qId = Model.Id }, null)</p>
         @if (!Model.Answers.Any())
         {
             <div>
@@ -161,12 +163,13 @@
                     }
                 </div>
                 <div>
-                    Comment (@a.Comments.Count())
+                    @Html.ActionLink("Comment", "Create", "Comments", new { qId = Model.Id }, null) (@a.Comments.Count())
                     @* Action link to Comment *@
                 </div>
             </div>
 
             <div class="comment-box">
+                
                 @foreach (var c in a.Comments)
                 {
                     <div class="comment-card">
