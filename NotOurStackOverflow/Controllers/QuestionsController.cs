@@ -115,8 +115,7 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
-            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
-            db.SaveChanges();
+
 
             if (negatingVote != null)
             {
@@ -124,6 +123,8 @@ namespace NotOurStackOverflow.Controllers
                 db.SaveChanges();
             }
 
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
             return RedirectToAction("LandingPage");
         }
 
@@ -189,14 +190,15 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
-            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
-            db.SaveChanges();
 
             if (negatingVote != null)
             {
                 db.Votes.Remove(negatingVote);
                 db.SaveChanges();
             }
+
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
 
             return RedirectToAction("Details", currentQuestion);
         }
