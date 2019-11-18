@@ -135,6 +135,10 @@ namespace NotOurStackOverflow.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Question question = db.Questions.Include(x => x.Votes).FirstOrDefault(p => p.Id == id);
+            foreach (Post p in db.Posts)
+            {
+                db.Entry(p).Collection(x => x.Votes).Load();
+            }
             if (question == null)
             {
                 return HttpNotFound();
@@ -151,8 +155,11 @@ namespace NotOurStackOverflow.Controllers
                 return RedirectToAction("Register", "Account");
             }
 
-            Question currentQuestion = db.Questions.Include(x => x.Votes).FirstOrDefault(x => x.Id == id);
-
+            Question currentQuestion = db.Questions.Include(p => p.Comments).Include(x => x.Votes).Include(p => p.Answers).First(x => x.Id == id);
+            foreach (Post p in db.Posts)
+            {
+                db.Entry(p).Collection(x => x.Votes).Load();
+            }
             Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
             ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
             ApplicationUser votedUser = db.Users.Find(post.UserId);
