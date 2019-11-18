@@ -7,61 +7,62 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 
-<body class="card-box">
+<body>
 
-    <div class="question-card">
-        <h4>
-            @Model.Title
-        </h4>
-
-        <div class="user-card">
-            @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id })
-            | @Model.User.Reputation
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id })
+                    | @Model.User.Reputation
+                </div>
+                <div class="col text-right">
+                    @Model.DatePosted
+                </div>
+            </div>
         </div>
 
-        <p class="question-body">
+        <div class="card-body">
+            <h5 class="card-title">
+                @Model.Title
+            </h5>
             @Model.Body
-        </p>
+        </div>
 
-        <div class="info-container">
-            <div>
-                @Model.DatePosted
-            </div>
-            <div class="tag-box">
-                @foreach (var t in Model.Tags)
-                {
-                    <div class="tag">
-                        @t.Title
-                        @*Actionlink to q's with tag*@
+        <div class="card-footer text-muted container">
+            <div class="row">
+                <div class="col-sm">
+                    @foreach (var t in Model.Tags)
+                    {
+                        <div class="badge badge-pill badge-secondary">
+                            @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, new { @style = "color:white;" })
+                        </div>
+                    }
+                </div>
+                <div class="col-sm row align-items-sm-end justify-content-end">
+                    <div class="col-3">
+                        @using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("id", Model.Id)
+                            @Html.Hidden("isPositive", true)
+                            @Html.Hidden("postId", Model.Id)
+                            <input type="submit" value="(@Model.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                        }
                     </div>
-                }
-            </div>
-            <div class="vote-box">
-                @using (Html.BeginForm(FormMethod.Post))
-                {
-                    @Html.Hidden("id", Model.Id)
-                    @Html.Hidden("isPositive", true)
-                    @Html.Hidden("postId", Model.Id)
-                    <input type="submit" value="++" />
-                }
 
-                ||
-
-                @using (Html.BeginForm(FormMethod.Post))
-                {
-                    @Html.Hidden("id", Model.Id)
-                    @Html.Hidden("isPositive", false)
-                    @Html.Hidden("postId", Model.Id)
-                    <input type="submit" value="--"  />
-                }
+                    <div class="col-3">
+                        @using (Html.BeginForm(FormMethod.Post))
+                        {
+                            @Html.Hidden("id", Model.Id)
+                            @Html.Hidden("isPositive", false)
+                            @Html.Hidden("postId", Model.Id)
+                            <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                        }
+                    </div>
+                </div>
             </div>
-            <div>
-                Answer(@Model.Answers.Count())
-                @* Action link to answer *@
-            </div>
-            <div>
-                Comment(@Model.Comments.Count())
-                @* Action link to Comment *@
+            <div class="row col-sm justify-content-end" style="margin-top:5px">
+                Answer (@Model.Answers.Count()) || Comment (@Model.Comments.Count())
             </div>
         </div>
     </div>
@@ -69,45 +70,51 @@
 
     @if (Model.Comments.Any())
     {
-        <div class="comment-box">
-            <h4>Comments</h4>
-            @foreach (var c in Model.Comments)
-            {
-                <div class="comment-card">
-                    <div class="user-card">
+        foreach (var c in Model.Comments)
+        {
+            <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
+                <div class="row card-header-pills">
+                    <div class="col">
                         @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
                         | @c.User.Reputation
                     </div>
-                    <p class="comment-body">
-                        @c.Body
-                    </p>
-                    <div class="info-container">
-                        <div>
-                            @c.DatePosted
-                        </div>
-
-                        <div class="vote-box">
+                    <div class="col text-right">
+                        @c.DatePosted
+                    </div>
+                </div>
+                <p class="card-body">
+                    @c.Body
+                </p>
+                <div class="card-footer container">
+                    <div class="row justify-content-end align-items-end">
+                        <div class="col-2">
                             @using (Html.BeginForm(FormMethod.Post))
                             {
                                 @Html.Hidden("id", Model.Id)
                                 @Html.Hidden("isPositive", true)
                                 @Html.Hidden("postId", c.Id)
-                                <input type="submit" value="++" />
+                                <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
                             }
-                            ||
-
+                        </div>
+                        <div class="col-2">
                             @using (Html.BeginForm(FormMethod.Post))
                             {
                                 @Html.Hidden("id", Model.Id)
                                 @Html.Hidden("isPositive", false)
                                 @Html.Hidden("postId", c.Id)
-                                <input type="submit" value="--" />
+                                <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
                             }
+                        </div>
+                        <div class="col-2">
+                            <button>
+                                Reply
+                            </button>
+                            @*action link for adding on comment*@
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     }
 
     <div class="answer-box">
