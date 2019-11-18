@@ -106,7 +106,7 @@ namespace NotOurStackOverflow.Controllers
                 PostUserId = votedUser.Id,
             };
 
-            var negatingVote = post.Votes.Where(v => v.VotingUserId == votingUser.Id && v.IsUpVote != newVote.IsUpVote).First();
+            var negatingVote = post.Votes.Where(v => v.VotingUserId == votingUser.Id && v.IsUpVote != newVote.IsUpVote).FirstOrDefault();
             db.Votes.Add(newVote);
             db.SaveChanges();
 
