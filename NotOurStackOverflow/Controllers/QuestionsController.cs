@@ -115,8 +115,6 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
-
-
             if (negatingVote != null)
             {
                 db.Votes.Remove(negatingVote);

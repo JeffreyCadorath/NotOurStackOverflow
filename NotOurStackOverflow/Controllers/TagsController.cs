@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using NotOurStackOverflow.Models;
 using NotOurStackOverflow.Models.Helpers;
 using NotOurStackOverflow.Models.ViewModels;
@@ -134,17 +135,76 @@ namespace NotOurStackOverflow.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult TagsQuestions(int Id)
+        public ActionResult TagsQuestions(int? Id)
         {
-            var QuestionList = db.Questions.Where(x => x.Tags.Any(i => i.Id == Id)).ToList();
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var tag = db.Tags.Find(Id);
+            if (tag == null)
+            {
+                return HttpNotFound();
+            }
+
+            var QuestionList = db.Questions.Include("Votes").Where(x => x.Tags.Any(i => i.Id == tag.Id)).ToList();
 
             TagQuestionsViewModel tagQuestionsViewModel = new TagQuestionsViewModel
             {
-                AllQuestions = QuestionList
+                AllQuestions = QuestionList,
+                PageTag = tag,
+            };
+            return View(tagQuestionsViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult TagsQuestions(int postId, bool isPositive, int currentTagId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+
+
+            Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
+            ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
+            ApplicationUser votedUser = db.Users.Find(post.UserId);
+            Tag currentTag = db.Tags.Find(currentTagId);
+
+            if (post == null || votingUser == null || votedUser == null || currentTag == null)
+            {
+                return HttpNotFound();
+            }
+
+            Vote newVote = new Vote
+            {
+                IsUpVote = isPositive,
+                Post = post,
+                PostId = post.Id,
+                VotingUser = votingUser,
+                VotingUserId = votingUser.Id,
+                PostUser = votedUser,
+                PostUserId = votedUser.Id,
             };
 
-            ViewBag.TagName = db.Tags.Find(Id).Title;
-            return View(tagQuestionsViewModel);
+            var negatingVote = post.Votes.Where(v => v.VotingUserId == votingUser.Id && v.IsUpVote != newVote.IsUpVote).FirstOrDefault();
+            db.Votes.Add(newVote);
+            db.SaveChanges();
+
+            post.Votes.Add(newVote);
+            votingUser.VoteMade.Add(newVote);
+            votedUser.VoteRecieved.Add(newVote);
+            db.SaveChanges();
+
+            if (negatingVote != null)
+            {
+                db.Votes.Remove(negatingVote);
+                db.SaveChanges();
+            }
+
+            votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
+            db.SaveChanges();
+            return RedirectToAction("TagsQuestions", new { Id = currentTag.Id });
         }
     }
 }

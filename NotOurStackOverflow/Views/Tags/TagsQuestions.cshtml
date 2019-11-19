@@ -1,65 +1,86 @@
 ﻿@model NotOurStackOverflow.Models.ViewModels.TagQuestionsViewModel
+@using Microsoft.AspNet.Identity;
+
 @{
     ViewBag.Title = "TagsQuestions";
 }
 
-<h2>ViewBag.TagName</h2>
+<h2>@Model.PageTag.Title</h2>
 
 <hr />
 
-<div class="button-box">
-    <button>Newest</button>
-    <button>Most Popular</button>
-    <button>Qs and As of the Day</button>
-</div>
-
-<body class="card-box">
+<div>
     @foreach (var r in Model.AllQuestions)
     {
-        <div class="question-card">
-            <h4>
-                @Html.ActionLink(r.Title, "Details", "Questions", new {Id = r.Id }, new { @class = "question-title-link" })
-            </h4>
-            <div class="user-card">
-                @* link to user profile *@
-                @r.User.UserName | @r.User.Reputation
+        <div class="card w-auto margin-bottom" style="margin-bottom:10px; margin-top:10px">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">@r.User.UserName | @r.User.Reputation</div>
+                    <div class="col text-right">@r.DatePosted</div>
+                </div>
             </div>
-            <div class="info-container">
-                <div>
-                    @r.DatePosted
-                </div>
-                <div class="tag-box">
-                    @foreach (var t in r.Tags)
-                    {
-                        <div class="tag">
-                            @t.Title
-                            @* Link to tag with list of questions *@
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Html.ActionLink(r.Title, "Details", "Questions", new { Id = r.Id }, new { @class = "question-title-link" })
+                </h5>
+            </div>
+            <div class="card-footer text-muted container">
+                <div class="row">
+                    <div class="col-sm">
+                        @foreach (var t in r.Tags)
+                        {
+                            <div class="badge badge-pill badge-secondary">
+                                @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, new { @style = "color:white;" })
+                                @* Link to tag with list of questions *@
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-sm row align-items-sm-end justify-content-sm-end">
+
+                        <div class="col-3">
+                            @if (!r.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            {
+                                using (Html.BeginForm(FormMethod.Post))
+                                {
+                                    @Html.Hidden("isPositive", true)
+                                    @Html.Hidden("postId", r.Id)
+                                    @Html.Hidden("currentTagId", Model.PageTag.Id)
+                                    <input type="submit" value="(@r.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                }
+                            }
+                            else
+                            {
+                                <span>(@r.Votes.Where(x => x.IsUpVote).Count()  ++)</span>
+                            }
+
                         </div>
-                    }
+                        <div class="col-3">
+                            @if (!r.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
+                            {
+                                using (Html.BeginForm(FormMethod.Post))
+                                {
+                                    @Html.Hidden("isPositive", false)
+                                    @Html.Hidden("postId", r.Id)
+                                    @Html.Hidden("currentTagId", Model.PageTag.Id)
+                                    <input type="submit" value="--  (@r.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    <span></span>
+                                }
+                            }
+                            else
+                            {
+                                <span>(--  @r.Votes.Where(x => !x.IsUpVote).Count())</span>
+                            }
+
+                        </div>
+                    </div>
                 </div>
-                <div class="vote-box">
-                    <button id="upvote">
-                        ++
-                    </button>
-                    ||
-                    <button id="downvote">
-                        --
-                    </button>
-                    @* Add upvote/downvote (post) *@
-                </div>
-                <div>
-                    Answer (@r.Answers.Count())
-                    @* Action link to answer *@
-                </div>
-                <div>
-                    Comment (@r.Comments.Count())
-                    @* Action link to Comment *@
+                <div class="row col-sm justify-content-end" style="margin-top:5px">
+                    <div>
+                        @Html.ActionLink("Answer", "Create", "Answers", new { qId = r.Id }, null) (@r.Answers.Count()) || @Html.ActionLink("Comment", "Create", "Comments", new { qId = r.Id }, null) (@r.Comments.Count())
+                    </div>
                 </div>
             </div>
         </div>
     }
-</body>
-<div class="page-box">
-    <button id="next-ten"><<</button>
-    <button id="prev-ten">>></button>
 </div>
