@@ -143,6 +143,7 @@ namespace NotOurStackOverflow.Controllers
                 AllQuestions = QuestionList
             };
 
+            ViewBag.TagName = db.Tags.Find(Id).Title;
             return View(tagQuestionsViewModel);
         }
     }
