@@ -165,7 +165,7 @@
             </div>
         }
 
-        @foreach (var a in Model.Answers)
+        @foreach (var a in Model.Answers.OrderBy(a => !a.IsAccepted))
         {
             <div class="card border-warning">
                 <div class="row card-header-pills">
@@ -182,6 +182,14 @@
                 </div>
                 <div class="card-footer container">
                     <div class="row justify-content-end align-items-end">
+
+                        @if (a.IsAccepted)
+                        {
+                            <div class="col-lg align-content-start">
+                                <h5 class="text-success">Accepted Answer</h5>
+                            </div>
+                        }
+
                         <div class="col-1">
                             @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
                             {
