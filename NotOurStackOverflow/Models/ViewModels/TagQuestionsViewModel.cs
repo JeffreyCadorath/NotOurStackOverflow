@@ -8,6 +8,7 @@ namespace NotOurStackOverflow.Models.ViewModels
     public class TagQuestionsViewModel
     {
         public ICollection<Question> AllQuestions { get; set; }
+        public Tag PageTag { get; set; }
 
         public TagQuestionsViewModel()
         {
