@@ -10,6 +10,7 @@
     @Html.AntiForgeryToken()
     <h4>Sign up with Not Our Stack Overflow and cast the demon of ignorance into darkest perdition, for all humanity. 
     The internet wills it.</h4>
+    <h5>Or @Html.ActionLink("Login", "Login") if you already have an account.</h5>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">

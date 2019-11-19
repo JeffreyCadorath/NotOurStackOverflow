@@ -80,9 +80,16 @@
             <div class="row col-sm justify-content-end" style="margin-top:5px">
                 Answer (@Model.Answers.Count()) || Comment (@Model.Comments.Count())
             </div>
+            @if (User.Identity.GetUserId() != Model.User.Id)
+            {
+        <div class="row col-sm justify-content-end">
+            <button type="button" class="btn btn-primary btn-lg">
+                @Html.ActionLink("Answer", "Create", "Answers", new { qId = Model.Id }, new { @class = "text-white" })
+            </button>
+        </div>
+            }
         </div>
     </div>
-
 
     @if (Model.Comments.Any())
     {

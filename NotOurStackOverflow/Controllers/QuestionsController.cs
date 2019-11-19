@@ -204,9 +204,7 @@ namespace NotOurStackOverflow.Controllers
         // GET: Questions/Create
         public ActionResult Create()
         {
-            var user = db.Users.Find(User.Identity.GetUserId());
-
-            if (user == null)
+            if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Register", "Account");
             }

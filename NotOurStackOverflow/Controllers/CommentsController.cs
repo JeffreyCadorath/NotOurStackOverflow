@@ -50,6 +50,11 @@ namespace NotOurStackOverflow.Controllers
         // GET: Comments/Create
         public ActionResult Create(int qId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+
             var post = businessLogic.GetPost(qId);
             if(post is Question)
             {

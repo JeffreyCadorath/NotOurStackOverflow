@@ -50,6 +50,11 @@ namespace NotOurStackOverflow.Controllers
         // GET: Answers/Create
         public ActionResult Create(int qId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Register", "Account");
+            }
+
             ViewBag.Question = businessLogic.GetQuestion(qId);
             return View();
         }
