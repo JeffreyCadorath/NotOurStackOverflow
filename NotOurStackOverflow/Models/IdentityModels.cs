@@ -84,6 +84,7 @@ namespace NotOurStackOverflow.Models
         }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Question Question { get; set; }
+        public bool IsAccepted { get; set; }
         public int QuestionId { get; set; }
     }
     public class Vote

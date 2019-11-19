@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201911122018591_updatedApplicationUser.Designer.cs">
       <DependentUpon>201911122018591_updatedApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911192016463_AddChosenToAnswers.cs" />
+    <Compile Include="Migrations\201911192016463_AddChosenToAnswers.Designer.cs">
+      <DependentUpon>201911192016463_AddChosenToAnswers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Helpers\BusinessLogic.cs" />
@@ -338,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911122018591_updatedApplicationUser.resx">
       <DependentUpon>201911122018591_updatedApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911192016463_AddChosenToAnswers.resx">
+      <DependentUpon>201911192016463_AddChosenToAnswers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
