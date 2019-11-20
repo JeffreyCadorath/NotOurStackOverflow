@@ -43,11 +43,14 @@ else
 
                         <div class="col-sm row align-items-sm-end justify-content-sm-end">
                             <div class="col-3">
-                                <button class="btn btn-link" disabled>(@q.Votes.Where(x => x.IsUpVote).Count())  ++</button>
+                                <button type="submit" class="btn btn-success" disabled>
+                                    ++ <span class="badge badge-light">@q.Votes.Where(x => x.IsUpVote).Count()</span>
+                                </button>
                             </div>
                             <div class="col-3">
-                                <button class="btn btn-link" disabled>--  (@q.Votes.Where(x => !x.IsUpVote).Count())</button> 
-                                    <span></span>
+                                <button type="submit" class="btn btn-danger" disabled>
+                                    -- <span class="badge badge-light">@q.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -106,12 +109,16 @@ else
                                 {
                                     @Html.Hidden("isPositive", true)
                                     @Html.Hidden("postId", r.Id)
-                                    <input type="submit" value="(@r.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    <button type="submit" class="btn btn-success" value="@r.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                        ++ <span class="badge badge-light">@r.Votes.Where(x => x.IsUpVote).Count()</span>
+                                    </button>
                                 }
                             }
                             else
                             {
-                                <span>(@r.Votes.Where(x => x.IsUpVote).Count()  ++)</span>
+                                <button type="submit" class="btn btn-success" value="@r.Votes.Where(x => x.IsUpVote).Count()  ++" disabled>
+                                    ++ <span class="badge badge-light">@r.Votes.Where(x => x.IsUpVote).Count()</span>
+                                </button>
                             }
 
                         </div>
@@ -122,13 +129,16 @@ else
                                 {
                                     @Html.Hidden("isPositive", false)
                                     @Html.Hidden("postId", r.Id)
-                                    <input type="submit" value="--  (@r.Votes.Where(x => !x.IsUpVote).Count())" />
-                                    <span></span>
+                                    <button type="submit" class="btn btn-danger" value="@r.Votes.Where(x => !x.IsUpVote).Count()  ++">
+                                        -- <span class="badge badge-light">@r.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                    </button>
                                 }
                             }
                             else
                             {
-                                <span>(--  @r.Votes.Where(x => !x.IsUpVote).Count())</span>
+                                <button type="submit" class="btn btn-danger" value="@r.Votes.Where(x => !x.IsUpVote).Count()  ++" disabled>
+                                    -- <span class="badge badge-light">@r.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                </button>
                             }
 
                         </div>
