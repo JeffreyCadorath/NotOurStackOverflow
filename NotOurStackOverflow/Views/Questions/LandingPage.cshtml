@@ -113,7 +113,6 @@ else
                             {
                                 <span>(@r.Votes.Where(x => x.IsUpVote).Count()  ++)</span>
                             }
-
                         </div>
                         <div class="col-3">
                             @if (!r.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))

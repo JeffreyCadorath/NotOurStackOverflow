@@ -182,54 +182,63 @@
                 </div>
                 <div class="card-footer container">
                     <div class="row justify-content-end align-items-end">
-
-                        @if (a.IsAccepted)
-                        {
-                            <div class="col-lg align-content-start">
+                        <div class="col-lg align-content-start">
+                            @if (a.IsAccepted)
+                            {
                                 <h5 class="text-success">Accepted Answer</h5>
+
+                            }
+                            else if (!a.IsAccepted && Model.UserId == User.Identity.GetUserId())
+                            {
+                                using (Html.BeginForm(FormMethod.Post))
+                                {
+                                    @Html.Hidden("id", Model.Id)
+                                    @Html.Hidden("answerId", a.Id)
+                                    <input type="submit" value="Mark as Accepted" />
+                                }
+                            }
+                        </div>
+
+                            <div class="col-1">
+                                @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
+                                {
+                                    using (Html.BeginForm(FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", true)
+                                        @Html.Hidden("postId", a.Id)
+                                        <input type="submit" value="(@a.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    }
+                                }
+                                else
+                                {
+                                    <span>(@a.Votes.Where(x => x.IsUpVote).Count() ++)</span>
+                                }
+
                             </div>
-                        }
-
-                        <div class="col-1">
-                            @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
-                            {
-                                using (Html.BeginForm(FormMethod.Post))
+                            <div class="col-1">
+                                @if (!a.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
                                 {
-                                    @Html.Hidden("id", Model.Id)
-                                    @Html.Hidden("isPositive", true)
-                                    @Html.Hidden("postId", a.Id)
-                                    <input type="submit" value="(@a.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    using (Html.BeginForm(FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", false)
+                                        @Html.Hidden("postId", a.Id)
+                                        <input type="submit" value="--  (@a.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <span>(@a.Votes.Where(x => x.IsUpVote).Count() ++)</span>
-                            }
-
-                        </div>
-                        <div class="col-1">
-                            @if (!a.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
-                            {
-                                using (Html.BeginForm(FormMethod.Post))
+                                else
                                 {
-                                    @Html.Hidden("id", Model.Id)
-                                    @Html.Hidden("isPositive", false)
-                                    @Html.Hidden("postId", a.Id)
-                                    <input type="submit" value="--  (@a.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    <span>(-- @a.Votes.Where(x => !x.IsUpVote).Count())</span>
                                 }
-                            }
-                            else
-                            {
-                                <span>(-- @a.Votes.Where(x => !x.IsUpVote).Count())</span>
-                            }
+                            </div>
+                            <div class="col-2">
+                                <button onclick="location.href = '@Url.Action("Create", "Comments", new { qId = a.Id })'; return false;">
+                                    Reply
+                                </button>
+                                @*action link for adding on comment*@
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button onclick="location.href = '@Url.Action("Create", "Comments", new { qId = a.Id })'; return false;">
-                                Reply
-                            </button>
-                            @*action link for adding on comment*@
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -261,7 +270,6 @@
                                             @Html.Hidden("postId", c.Id)
                                             <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
                                         }
-
                                     }
                                     else
                                     {
