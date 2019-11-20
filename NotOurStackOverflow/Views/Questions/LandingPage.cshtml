@@ -43,10 +43,10 @@ else
 
                         <div class="col-sm row align-items-sm-end justify-content-sm-end">
                             <div class="col-3">
-                                <button disabled>(@q.Votes.Where(x => x.IsUpVote).Count())  ++</button>
+                                <button class="btn btn-link" disabled>(@q.Votes.Where(x => x.IsUpVote).Count())  ++</button>
                             </div>
                             <div class="col-3">
-                                <button disabled>--  (@q.Votes.Where(x => !x.IsUpVote).Count())</button> 
+                                <button class="btn btn-link" disabled>--  (@q.Votes.Where(x => !x.IsUpVote).Count())</button> 
                                     <span></span>
                             </div>
                         </div>

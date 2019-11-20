@@ -49,14 +49,15 @@
                                 @Html.Hidden("id", Model.Id)
                                 @Html.Hidden("isPositive", true)
                                 @Html.Hidden("postId", Model.Id)
-                                <input type="submit" value="(@Model.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                <input type="submit" class="btn btn-primary" value="@Model.Votes.Where(x => x.IsUpVote).Count()  ++" />
                             }
                         }
                         else
                         {
-                            <span>(@Model.Votes.Where(x => x.IsUpVote).Count() ++)</span>
+                            <button type="button" class="btn btn-primary" disabled>
+                                ++ <span class="badge badge-light">@Model.Votes.Where(x => x.IsUpVote).Count()</span>
+                            </button>
                         }
-
                     </div>
 
                     <div class="col-3">
@@ -67,12 +68,14 @@
                                 @Html.Hidden("id", Model.Id)
                                 @Html.Hidden("isPositive", false)
                                 @Html.Hidden("postId", Model.Id)
-                                <input type="submit" value="--  (@Model.Votes.Where(x => !x.IsUpVote).Count())" />
+                                <input type="submit" class="btn btn-primary" value="--  @Model.Votes.Where(x => !x.IsUpVote).Count()" />
                             }
                         }
                         else
                         {
-                            <span>(-- @Model.Votes.Where(x => !x.IsUpVote).Count())</span>
+                            <button type="button" class="btn btn-primary" disabled>
+                                -- <span class="badge badge-light">@Model.Votes.Where(x => !x.IsUpVote).Count()</span>
+                            </button>
                         }
                     </div>
                 </div>
@@ -82,11 +85,11 @@
             </div>
             @if (User.Identity.GetUserId() != Model.User.Id)
             {
-        <div class="row col-sm justify-content-end">
-            <button type="button" class="btn btn-primary btn-lg">
-                @Html.ActionLink("Answer", "Create", "Answers", new { qId = Model.Id }, new { @class = "text-white" })
-            </button>
-        </div>
+                <div class="row col-sm justify-content-end">
+                    <button type="button" class="btn btn-primary btn-lg">
+                        @Html.ActionLink("Answer", "Create", "Answers", new { qId = Model.Id }, new { @class = "text-white" })
+                    </button>
+                </div>
             }
         </div>
     </div>
@@ -118,12 +121,14 @@
                                     @Html.Hidden("id", Model.Id)
                                     @Html.Hidden("isPositive", true)
                                     @Html.Hidden("postId", c.Id)
-                                    <input type="submit" value="(@c.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    <input type="submit" class="btn btn-primary" value="@c.Votes.Where(x => x.IsUpVote).Count() ++" />
                                 }
                             }
                             else
                             {
-                                <span>(@c.Votes.Where(x => x.IsUpVote).Count() ++) </span>
+                                <button type="button" class="btn btn-primary" disabled>
+                                    ++ <span class="badge badge-light">@c.Votes.Where(x => x.IsUpVote).Count()</span>
+                                </button>
                             }
 
                         </div>
@@ -135,12 +140,14 @@
                                     @Html.Hidden("id", Model.Id)
                                     @Html.Hidden("isPositive", false)
                                     @Html.Hidden("postId", c.Id)
-                                    <input type="submit" value="--  (@c.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    <input type="submit" class="btn btn-primary" value="--  @c.Votes.Where(x => !x.IsUpVote).Count()" />
                                 }
                             }
                             else
                             {
-                                <span>(-- @c.Votes.Where(x => !x.IsUpVote).Count())</span>
+                                <button type="button" class="btn btn-primary" disabled>
+                                    -- <span class="badge badge-light">@c.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                </button>
                             }
 
                         </div>
@@ -190,12 +197,14 @@
                                     @Html.Hidden("id", Model.Id)
                                     @Html.Hidden("isPositive", true)
                                     @Html.Hidden("postId", a.Id)
-                                    <input type="submit" value="(@a.Votes.Where(x => x.IsUpVote).Count())  ++" />
+                                    <input type="submit" class="btn btn-primary" value="@a.Votes.Where(x => x.IsUpVote).Count()  ++" />
                                 }
                             }
                             else
                             {
-                                <span>(@a.Votes.Where(x => x.IsUpVote).Count() ++)</span>
+                                <button type="button" class="btn btn-primary" disabled>
+                                    ++ <span class="badge badge-light">@a.Votes.Where(x => x.IsUpVote).Count()</span>
+                                </button>
                             }
 
                         </div>
@@ -207,12 +216,14 @@
                                     @Html.Hidden("id", Model.Id)
                                     @Html.Hidden("isPositive", false)
                                     @Html.Hidden("postId", a.Id)
-                                    <input type="submit" value="--  (@a.Votes.Where(x => !x.IsUpVote).Count())" />
+                                    <input type="submit" class="btn btn-primary" value="--  @a.Votes.Where(x => !x.IsUpVote).Count()" />
                                 }
                             }
                             else
                             {
-                                <span>(-- @a.Votes.Where(x => !x.IsUpVote).Count())</span>
+                                <button type="button" class="btn btn-primary" disabled>
+                                    -- <span class="badge badge-light">@a.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                </button>
                             }
                         </div>
                         <div class="col-2">
