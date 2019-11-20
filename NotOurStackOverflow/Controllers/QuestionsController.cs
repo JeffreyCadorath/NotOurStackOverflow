@@ -146,6 +146,15 @@ namespace NotOurStackOverflow.Controllers
         }
 
         [HttpPost]
+        public ActionResult Details(int Id, int answerId)
+        {
+            Question currentQuestion = dataAccess.GetQuestion(Id);
+            businessLogic.SetAnswerAsAccepted(Id, answerId);
+
+            return RedirectToAction("Details", currentQuestion);
+        }
+
+        [HttpPost]
         public ActionResult Details(int? id, int postId, bool isPositive)
         {
             // create a vote the the accepted parameters

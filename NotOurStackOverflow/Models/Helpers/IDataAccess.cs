@@ -16,8 +16,10 @@ namespace NotOurStackOverflow.Models.Helpers
         ICollection<Answer> GetAllUserAnswers(string Id);
         ApplicationUser GetUser(string id);
         Question GetQuestion(int Id);
-
+        Answer GetAnswer(int Id);
         Post GetPost(int Id);
+
+        void Save();
     }
 
     public class DBDataAccess : IDataAccess
@@ -72,6 +74,16 @@ namespace NotOurStackOverflow.Models.Helpers
         public Post GetPost(int Id)
         {
             return dbContext.Posts.Find(Id);
+        }
+
+        public Answer GetAnswer(int Id)
+        {
+            return dbContext.Answers.Find(Id);
+        }
+
+        public void Save()
+        {
+            dbContext.SaveChanges();
         }
     }
 }

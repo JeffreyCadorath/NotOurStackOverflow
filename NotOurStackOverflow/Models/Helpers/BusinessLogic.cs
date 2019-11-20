@@ -50,5 +50,26 @@ namespace NotOurStackOverflow.Models.Helpers
         {
             return dataAccess.GetPost(Id);
         }
+
+        public void SetAnswerAsAccepted(int questionId, int answerId)
+        {
+            Question question = dataAccess.GetQuestion(questionId);
+            Answer answer = dataAccess.GetAnswer(answerId);
+
+            if(question.Answers.Any(a => a.IsAccepted))
+            {
+                RemoveAcceptedAnswer(question.Id);
+            }
+            answer.IsAccepted = true;
+            dataAccess.Save();
+        }
+
+        public void RemoveAcceptedAnswer(int Id)
+        {
+            Question question = dataAccess.GetQuestion(Id);
+            Answer acceptedAnswer = question.Answers.Where(a => a.IsAccepted).FirstOrDefault();
+            acceptedAnswer.IsAccepted = false;
+            dataAccess.Save();
+        }
     }
 }
