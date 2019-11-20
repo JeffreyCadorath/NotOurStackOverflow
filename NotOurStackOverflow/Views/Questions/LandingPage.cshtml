@@ -68,9 +68,9 @@ else
 <hr />
 
 <div class="button-box">
-    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="New" })'; return false;">Newest</button>
-    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="Popular" })'; return false;">Most Popular</button>
-    <button onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="OfDay" })'; return false;">Qs and As of the Day</button>
+    <button class="btn btn-outline-dark" onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="New" })'; return false;">Newest</button>
+    <button class="btn btn-outline-dark" onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="Popular" })'; return false;">Most Popular</button>
+    <button class="btn btn-outline-dark" onclick="location.href = '@Url.Action("LandingPage", "Questions", new {Page = Model.Page, sort="OfDay" })'; return false;">Qs and As of the Day</button>
 </div>
 
 <div>
