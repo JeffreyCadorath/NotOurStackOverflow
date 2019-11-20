@@ -22,7 +22,10 @@ else
         {
             <div class="card">
                 <div class="card-header">
-                    <span>@q.DatePosted</span>
+                    <div class="row">
+                        <div class="col">@q.User.UserName | @q.User.Reputation</div>
+                        <span>@q.DatePosted</span>
+                    </div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
