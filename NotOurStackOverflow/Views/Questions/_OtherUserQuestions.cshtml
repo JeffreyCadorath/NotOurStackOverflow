@@ -1,6 +1,6 @@
-﻿@model List<NotOurStackOverflow.Models.Question>
+﻿
+@model List<NotOurStackOverflow.Models.Question>
 @using Microsoft.AspNet.Identity;
-
 <div id="other-users">
     @foreach (var r in Model)
     {
@@ -9,7 +9,6 @@
                 <div class="row">
                     <div class="col">@r.User.UserName | @r.User.Reputation</div>
                     <div class="col text-right">@r.DatePosted</div>
-
                 </div>
             </div>
             <div class="card-body">
@@ -28,9 +27,7 @@
                             </div>
                         }
                     </div>
-
                     <div class="col-sm row align-items-sm-end justify-content-sm-end">
-
                         <div class="col-3">
                             @if (!r.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                             {
@@ -50,7 +47,6 @@
                                     ++ <span class="badge badge-light">@r.Votes.Where(x => x.IsUpVote).Count()</span>
                                 </button>
                             }
-
                         </div>
                         <div class="col-3">
                             @if (!r.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
@@ -71,7 +67,6 @@
                                     -- <span class="badge badge-light">@r.Votes.Where(x => !x.IsUpVote).Count()</span>
                                 </button>
                             }
-
                         </div>
                     </div>
                 </div>

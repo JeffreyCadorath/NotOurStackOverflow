@@ -126,10 +126,10 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
-            return RedirectToAction("otherUserQuestions");
+            return RedirectToAction("_OtherUserQuestions");
         }
 
-        public PartialViewResult otherUserQuestions()
+        public PartialViewResult _OtherUserQuestions()
         {
             var allQuestions = businessLogic.GetQuestionsThatArentUsers(User.Identity.GetUserId());
             return PartialView("_OtherUserQuestions", allQuestions);
@@ -206,10 +206,10 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
-            return RedirectToAction("fullQuestion", new { questionId = currentQuestion.Id });
+            return RedirectToAction("_FullQuestion", new { questionId = currentQuestion.Id });
         }
 
-        public PartialViewResult fullQuestion(int questionId)
+        public PartialViewResult _FullQuestion(int questionId)
         {
             Question currentQuestion = db.Questions.Include(p => p.Comments).Include(x => x.Votes).Include(p => p.Answers).First(x => x.Id == questionId);
             foreach (Post p in db.Posts)
