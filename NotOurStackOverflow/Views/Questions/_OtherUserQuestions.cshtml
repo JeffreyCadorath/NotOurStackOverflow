@@ -34,7 +34,7 @@
                         <div class="col-3">
                             @if (!r.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()))
                             {
-                                using (Ajax.BeginForm("LandingPage", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "other-users", InsertionMode = InsertionMode.Replace }))
+                                using (Ajax.BeginForm("LandingPage", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "other-users", InsertionMode = InsertionMode.Replace }))
                                 {
                                     @Html.Hidden("isPositive", true)
                                     @Html.Hidden("postId", r.Id)

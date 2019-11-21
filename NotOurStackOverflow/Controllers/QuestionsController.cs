@@ -126,7 +126,6 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
-
             return RedirectToAction("otherUserQuestions");
         }
 
@@ -198,7 +197,6 @@ namespace NotOurStackOverflow.Controllers
             votedUser.VoteRecieved.Add(newVote);
             db.SaveChanges();
 
-
             if (negatingVote != null)
             {
                 db.Votes.Remove(negatingVote);
@@ -208,7 +206,17 @@ namespace NotOurStackOverflow.Controllers
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
 
-            return RedirectToAction("Details", currentQuestion);
+            return RedirectToAction("fullQuestion", new { questionId = currentQuestion.Id });
+        }
+
+        public PartialViewResult fullQuestion(int questionId)
+        {
+            Question currentQuestion = db.Questions.Include(p => p.Comments).Include(x => x.Votes).Include(p => p.Answers).First(x => x.Id == questionId);
+            foreach (Post p in db.Posts)
+            {
+                db.Entry(p).Collection(x => x.Votes).Load();
+            }
+            return PartialView("_FullQuestion", currentQuestion);
         }
 
         // GET: Questions/Create

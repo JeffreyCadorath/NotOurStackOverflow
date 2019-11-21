@@ -1,0 +1,315 @@
+﻿@model NotOurStackOverflow.Models.Question
+@using Microsoft.AspNet.Identity;
+
+    <div id="question-details">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id })
+                        | @Model.User.Reputation
+                    </div>
+                    <div class="col text-right">
+                        @Model.DatePosted
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Model.Title
+                </h5>
+                @Model.Body
+            </div>
+
+            <div class="card-footer text-muted container">
+                <div class="row">
+                    <div class="col-sm">
+                        @foreach (var t in Model.Tags)
+                        {
+                            <div class="badge badge-pill badge-secondary">
+                                @Html.ActionLink((string)t.Title, "TagsQuestions", "Tags", new { Id = t.Id }, new { @style = "color:white;" })
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm row align-items-sm-end justify-content-end">
+                        <div class="col-3">
+                            @if (!Model.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && Model.UserId != User.Identity.GetUserId())
+                            {
+                                using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                {
+                                    @Html.Hidden("id", Model.Id)
+                                    @Html.Hidden("isPositive", true)
+                                    @Html.Hidden("postId", Model.Id)
+                                    <button type="submit" class="btn btn-success" value="@Model.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                        ++ <span class="badge badge-light">@Model.Votes.Where(x => x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-success" disabled>
+                                    ++ <span class="badge badge-light">@Model.Votes.Where(x => x.IsUpVote).Count()</span>
+                                </button>
+                            }
+                        </div>
+
+                        <div class="col-3">
+                            @if (!Model.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && Model.UserId != User.Identity.GetUserId())
+                            {
+                                using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                {
+                                    @Html.Hidden("id", Model.Id)
+                                    @Html.Hidden("isPositive", false)
+                                    @Html.Hidden("postId", Model.Id)
+                                    <button type="submit" class="btn btn-danger" value="@Model.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                        -- <span class="badge badge-light">@Model.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-danger" disabled>
+                                    -- <span class="badge badge-light">@Model.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-sm justify-content-end" style="margin-top:5px">
+                    Answer (@Model.Answers.Count()) || Comment (@Model.Comments.Count())
+                </div>
+                @if (User.Identity.GetUserId() != Model.User.Id)
+                {
+                    <div class="row col-sm justify-content-end">
+                        <button type="button" class="btn btn-primary btn-lg">
+                            @Html.ActionLink("Answer", "Create", "Answers", new { qId = Model.Id }, new { @class = "text-white" })
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (Model.Comments.Any())
+        {
+            foreach (var c in Model.Comments)
+            {
+                <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
+                    <div class="row card-header-pills">
+                        <div class="col">
+                            @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                            | @c.User.Reputation
+                        </div>
+                        <div class="col text-right">
+                            @c.DatePosted
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @c.Body
+                    </div>
+                    <div class="card-footer container">
+                        <div class="row justify-content-end align-items-end">
+                            <div class="col-2">
+                                @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
+                                {
+                                    using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", true)
+                                        @Html.Hidden("postId", c.Id)
+                                        <button type="submit" class="btn btn-success" value="@c.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                            ++ <span class="badge badge-light">@c.Votes.Where(x => x.IsUpVote).Count()</span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success" disabled>
+                                        ++ <span class="badge badge-light">@c.Votes.Where(x => x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+
+                            </div>
+                            <div class="col-2">
+                                @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
+                                {
+                                    using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", false)
+                                        @Html.Hidden("postId", c.Id)
+                                        <button type="submit" class="btn btn-danger" value="@Model.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                            -- <span class="badge badge-light">@c.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-danger" disabled>
+                                        -- <span class="badge badge-light">@c.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+
+                            </div>
+                            <div class="col-2">
+                                @*action link for adding on comment*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        <hr />
+
+        <div class="answer-box">
+            <h5>Answers</h5>
+            @if (!Model.Answers.Any())
+            {
+                <div>
+                    @*Link to adding an answer*@
+                    Looks like there are no Answers to this question yet. Can you add one?
+                </div>
+            }
+
+            @foreach (var a in Model.Answers)
+            {
+                <div class="card border-warning">
+                    <div class="row card-header-pills">
+                        <div class="col">
+                            @Html.ActionLink(a.User.UserName, "Details", new { id = Model.User.Id })
+                            | @a.User.Reputation
+                        </div>
+                        <div class="col text-right">
+                            @a.DatePosted
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @a.Body
+                    </div>
+                    <div class="card-footer container">
+                        <div class="row justify-content-end align-items-end">
+                            <div class="col-sm-2">
+                                @if (!a.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
+                                {
+                                    using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", true)
+                                        @Html.Hidden("postId", a.Id)
+                                        <button type="submit" class="btn btn-success" value="@a.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                            ++ <span class="badge badge-light">@a.Votes.Where(x => x.IsUpVote).Count()</span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success" disabled>
+                                        ++ <span class="badge badge-light">@a.Votes.Where(x => x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+
+                            </div>
+                            <div class="col-1">
+                                @if (!a.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && a.UserId != User.Identity.GetUserId())
+                                {
+                                    using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                    {
+                                        @Html.Hidden("id", Model.Id)
+                                        @Html.Hidden("isPositive", false)
+                                        @Html.Hidden("postId", a.Id)
+                                        <button type="submit" class="btn btn-danger" value="@a.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                            -- <span class="badge badge-light">@a.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                        </button>
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-danger" disabled>
+                                        -- <span class="badge badge-light">@a.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                    </button>
+                                }
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "Comments", new { qId = a.Id })'; return false;">
+                                    Reply
+                                </button>
+                                @*action link for adding on comment*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment-box">
+                    @foreach (var c in a.Comments)
+                    {
+                        <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
+                            <div class="row card-header-pills">
+                                <div class="col">
+                                    @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                                    | @c.User.Reputation
+                                </div>
+                                <div class="col text-right">
+                                    @c.DatePosted
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @c.Body
+                            </div>
+                            <div class="card-footer container">
+                                <div class="row justify-content-end align-items-end">
+                                    <div class="col-2">
+                                        @if (!c.Votes.Any(x => x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
+                                        {
+                                            using (Ajax.BeginForm("Details", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                            {
+                                                @Html.Hidden("id", Model.Id)
+                                                @Html.Hidden("isPositive", true)
+                                                @Html.Hidden("postId", c.Id)
+                                                <button type="submit" class="btn btn-success" value="@c.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                                    ++ <span class="badge badge-light">@c.Votes.Where(x => x.IsUpVote).Count()</span>
+                                                </button>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-success" disabled>
+                                                ++ <span class="badge badge-light">@c.Votes.Where(x => x.IsUpVote).Count()</span>
+                                            </button>
+                                        }
+
+                                    </div>
+                                    <div class="col-2">
+                                        @if (!c.Votes.Any(x => !x.IsUpVote && x.VotingUserId == User.Identity.GetUserId()) && c.UserId != User.Identity.GetUserId())
+                                        {
+                                            using (Ajax.BeginForm("Details", "Questions", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "question-details", InsertionMode = InsertionMode.Replace }))
+                                            {
+                                                @Html.Hidden("id", Model.Id)
+                                                @Html.Hidden("isPositive", false)
+                                                @Html.Hidden("postId", c.Id)
+                                                <button type="submit" class="btn btn-danger" value="@c.Votes.Where(x => x.IsUpVote).Count()  ++">
+                                                    -- <span class="badge badge-light">@c.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                                </button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-danger" disabled>
+                                                -- <span class="badge badge-light">@c.Votes.Where(x => !x.IsUpVote).Count()</span>
+                                            </button>
+                                        }
+                                    </div>
+                                    <div class="col-2">
+                                        @*action link for adding on comment*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
