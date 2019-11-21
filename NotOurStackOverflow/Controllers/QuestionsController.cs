@@ -79,15 +79,17 @@ namespace NotOurStackOverflow.Controllers
         }
 
         [HttpPost]
-        public ActionResult LandingPage(int postId, bool isPositive)
+        public ActionResult LandingPage(int postId, string userId, bool isPositive)
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Register", "Account");
             }
 
+            string newUserId = User.Identity.GetUserId();
+
             Post post = db.Posts.Include(x => x.Votes).FirstOrDefault(p => p.Id == postId);
-            ApplicationUser votingUser = db.Users.Find(User.Identity.GetUserId());
+            ApplicationUser votingUser = db.Users.Find(newUserId);
             ApplicationUser votedUser = db.Users.Find(post.UserId);
 
             if (post == null || votingUser == null || votedUser == null)
@@ -123,7 +125,15 @@ namespace NotOurStackOverflow.Controllers
 
             votedUser.Reputation = businessLogic.TabulateReputation(votedUser.Id);
             db.SaveChanges();
-            return RedirectToAction("LandingPage");
+
+
+            return RedirectToAction("otherUserQuestions");
+        }
+
+        public PartialViewResult otherUserQuestions()
+        {
+            var allQuestions = businessLogic.GetQuestionsThatArentUsers(User.Identity.GetUserId());
+            return PartialView("_OtherUserQuestions", allQuestions);
         }
 
         // GET: Questions/Details/5
