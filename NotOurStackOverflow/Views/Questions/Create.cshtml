@@ -15,7 +15,7 @@
     <h4>Question</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    
+
     <div class="form-group">
         @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -27,7 +27,7 @@
     <div class="rounded">
         @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="rounded">
-            @Html.TextAreaFor(model => model.Body,10,1000, new { htmlAttributes = new { style = "rounded" } })
+            @Html.TextAreaFor(model => model.Body, 10, 1000, new { htmlAttributes = new { style = "rounded" } })
             @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -35,7 +35,15 @@
     <div class="form-group">
         <label class="control-label col-md-2">Tags:</label>
         <div class="col-md-10">
-            @Html.ListBox("TagId", (MultiSelectList)ViewBag.ListTest,new { @class = "form-control" })
+            @Html.ListBox("TagId", (MultiSelectList)ViewBag.ListTest, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">(Optional)New Tag:</label>
+        <div class="col-md-10">
+            @Html.TextBox("NewTagName")
             @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
         </div>
     </div>
