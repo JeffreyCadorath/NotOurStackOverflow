@@ -6,7 +6,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col">
-                        @Html.ActionLink(Model.User.UserName, "Details", new { id = Model.User.Id })
+                        @Model.User.UserName
                         | @Model.User.Reputation
                     </div>
                     <div class="col text-right">
@@ -18,7 +18,7 @@
                 <h5 class="card-title">
                     @Model.Title
                 </h5>
-                @Model.Body
+                @Html.Raw(Model.Body)
             </div>
             <div class="card-footer text-muted container">
                 <div class="row">
@@ -93,7 +93,7 @@
                 <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
                     <div class="row card-header-pills">
                         <div class="col">
-                            @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                            @c.User.UserName
                             | @c.User.Reputation
                         </div>
                         <div class="col text-right">
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @c.Body
+                        @Html.Raw(c.Body)
                     </div>
                     <div class="card-footer container">
                         <div class="row justify-content-end align-items-end">
@@ -170,7 +170,7 @@
                 <div class="card border-warning">
                     <div class="row card-header-pills">
                         <div class="col">
-                            @Html.ActionLink(a.User.UserName, "Details", new { id = Model.User.Id })
+                            @a.User.UserName
                             | @a.User.Reputation
                         </div>
                         <div class="col text-right">
@@ -178,7 +178,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @a.Body
+                        @Html.Raw(a.Body)
                     </div>
                     <div class="card-footer container">
                         <div class="row justify-content-end align-items-end">
@@ -237,7 +237,7 @@
                     <div class="card w-75 border-primary" style="margin:auto auto auto 20%; margin-top:5px;">
                         <div class="row card-header-pills">
                             <div class="col">
-                                @Html.ActionLink(c.User.UserName, "Details", new { id = Model.User.Id })
+                                @c.User.UserName
                                 | @c.User.Reputation
                             </div>
                             <div class="col text-right">
@@ -245,7 +245,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            @c.Body
+                            @Html.Raw(c.Body)
                         </div>
                         <div class="card-footer container">
                             <div class="row justify-content-end align-items-end">
