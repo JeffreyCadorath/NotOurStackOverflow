@@ -94,7 +94,7 @@ namespace NotOurStackOverflow.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             Vote newVote = new Vote
             {
                 IsUpVote = isPositive,
@@ -218,7 +218,7 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(List<int> TagId, string body, string Title)
+        public ActionResult Create(List<int> TagId, string body, string Title, string NewTagName)
         {
             Question question = new Question
             {
@@ -226,12 +226,26 @@ namespace NotOurStackOverflow.Controllers
                 Tags = new List<Tag>(),
                 Title = Title,
             };
-            foreach (var tagId in TagId)
+            if (TagId != null)
             {
-                question.Tags.Add(db.Tags.Find(tagId));
+                foreach (var tagId in TagId)
+                {
+                    question.Tags.Add(db.Tags.Find(tagId));
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(NewTagName))
+            {
+                Tag NewTag = new Tag();
+                NewTag.Title = NewTagName;
+
+                db.Tags.Add(NewTag);
+                db.SaveChanges();
+                question.Tags.Add(NewTag);
             }
             question.UserId = User.Identity.GetUserId();
             question.DatePosted = DateTime.Now;
+            db.SaveChanges();
             if (ModelState.IsValid)
             {
                 db.Posts.Add(question);
