@@ -218,6 +218,7 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create(List<int> TagId, string body, string Title, string NewTagName)
         {
             Question question = new Question

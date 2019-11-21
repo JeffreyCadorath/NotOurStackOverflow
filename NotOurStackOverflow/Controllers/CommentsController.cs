@@ -70,6 +70,7 @@ namespace NotOurStackOverflow.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create(int qId, [Bind(Include = "Id,Body,PostId")] Comment comment)
         {
             comment.UserId = User.Identity.GetUserId();

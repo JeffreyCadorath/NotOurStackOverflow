@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -43,6 +44,7 @@ namespace NotOurStackOverflow.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
         public DateTime? DatePosted { get; set; }
+        [AllowHtml]
         public string Body { get; set; }
         public ICollection<Vote> Votes { get; set; }
     }
